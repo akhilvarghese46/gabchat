@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1057254336467",
+    "project_id": "gabchat-93444",
+    "storage_bucket": "gabchat-93444.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057254336467:android:253e3dd4728c48c4f67126",
+        "android_client_info": {
+          "package_name": "com.assignment.gabchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057254336467-520tmga3efupedp6u3t9vettruhrt9gq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIrwIRc33SZ1f5mm-1dHQR38UNHC0vpZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057254336467-520tmga3efupedp6u3t9vettruhrt9gq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
