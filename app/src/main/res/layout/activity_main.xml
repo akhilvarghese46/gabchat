@@ -14,16 +14,7 @@
         android:layout_above="@+id/layoutMainMenu"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="11dp" />
-    <!---<LinearLayout
-        android:id="@+id/layoutMainContent"
-        android:layout_width="match_parent"
-        android:layout_height="657dp"
-        android:layout_above="@+id/layoutMainMenu"
-        android:layout_marginBottom="5dp"
-        android:orientation="vertical">
 
-
-    </LinearLayout>-->
     <LinearLayout
         android:id="@+id/layoutMainMenu"
         android:layout_width="match_parent"

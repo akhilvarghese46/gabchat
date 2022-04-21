@@ -46,4 +46,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.hbb20:ccp:2.6.0'
     implementation platform('com.google.firebase:firebase-bom:29.3.0')
+    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.148'
 }
