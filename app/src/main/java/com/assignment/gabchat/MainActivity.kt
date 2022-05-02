@@ -2,8 +2,10 @@ package com.assignment.gabchat
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.sendbird.android.SendBird
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,10 +17,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        SendBird.init("7CC919C1-9EE4-46A7-86FD-42BB871F4297", this)
+
+
         btnChat = findViewById<Button>(R.id.btnChatMenu)
         btnContact = findViewById<Button>(R.id.btnContactMenu)
 
         btnChat.setOnClickListener(){
+
             loadFragment( ChatFragment())
 
         }
@@ -41,6 +48,26 @@ class MainActivity : AppCompatActivity() {
     private fun initializeData() {
         var userName = intent.getStringExtra("userName")
         var userNickname = intent.getStringExtra("userNickName")
+        connectUserToServer(userName.toString(), userNickname.toString() )
+    }
+
+    fun connectUserToServer(userName: String, nickName: String)  {
+
+        SendBird.connect(userName) { username, e ->
+            if (e != null) {
+                Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            } else {
+                SendBird.updateCurrentUserInfo(nickName, null) { e ->
+                    if (e != null) {
+                        Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                    }
+                    loadFragment( ChatFragment())
+                    /*val intent = Intent(this, UserslistActivity::class.java)
+                    startActivity(intent)
+                    finish()*/
+                }
+            }
+        }
     }
 }
 

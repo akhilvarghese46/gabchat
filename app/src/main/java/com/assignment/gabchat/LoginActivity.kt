@@ -40,6 +40,8 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
         ccPicker = findViewById(R.id.country_code_picker)
         ccPicker!!.setOnCountryChangeListener(this)
         ccPicker!!.setDefaultCountryUsingNameCode("IE")
@@ -130,7 +132,6 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
                     Toast.makeText(this@LoginActivity, "Login Successfull", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this@LoginActivity, Registration::class.java))
                 } else {
-                    // Sign in failed, display a message and update the UI
                     Toast.makeText(this@LoginActivity, "Login Failed", Toast.LENGTH_SHORT).show()
 
                 }
