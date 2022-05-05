@@ -61,6 +61,7 @@ class ChatFragment : Fragment(),ChannelClickedListener {
     override fun onChannelListener(channel: ChannelModel) {
         val intent = Intent(activity, ChatActivity::class.java)
         intent.putExtra(EXTRA_CHANNEL_URL, channel.channelUrl)
+        intent.putExtra("calleeId", channel.userName)
         startActivity(intent)
     }
 

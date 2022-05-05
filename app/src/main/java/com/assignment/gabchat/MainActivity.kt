@@ -1,11 +1,15 @@
 package com.assignment.gabchat
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sendbird.android.SendBird
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,11 +22,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        SendBird.init("7CC919C1-9EE4-46A7-86FD-42BB871F4297", this)
+
+        /*SendBird.init("8A6041D3-0601-43F7-A01C-D20F4E0C6F8C", this)
+        SendBirdCall.init(applicationContext, "8A6041D3-0601-43F7-A01C-D20F4E0C6F8C")*/
+       /* SendBird.init("35F54875-BF9D-433D-8BD6-4923B035D649", this)
+        SendBirdCall.init(applicationContext, "35F54875-BF9D-433D-8BD6-4923B035D649")
+*/
 
 
         btnChat = findViewById<Button>(R.id.btnChatMenu)
-        btnContact = findViewById<Button>(R.id.btnContactMenu)
+       // btnContact = findViewById<Button>(R.id.btnContactMenu)
 
         btnChat.setOnClickListener(){
 
@@ -30,12 +39,43 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        btnContact.setOnClickListener(){
+       /* btnContact.setOnClickListener(){
             loadFragment( ContactFragment())
+        }*/
+
+        fab_createUser.setOnClickListener{
+            val intent = Intent(this, ContactActivity::class.java)
+            startActivity(intent)
         }
         initializeData()
 
     }
+    override fun onCreateOptionsMenu(settingsMenu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.settingsmenu, settingsMenu)
+        return super.onCreateOptionsMenu(settingsMenu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId) {
+
+            R.id.settings -> {
+
+                return true
+            }
+            R.id.logOut -> {
+
+                return true
+            }
+        }
+// it is a requirement to call this at the end of this function if the event has not been
+// handled
+        return super.onOptionsItemSelected(item)
+    }
+
+
+
+
 
     private fun loadFragment(fragment: Fragment) {
         var fragmentTransaction = fragmentManager.beginTransaction()
@@ -51,22 +91,28 @@ class MainActivity : AppCompatActivity() {
         connectUserToServer(userName.toString(), userNickname.toString() )
     }
 
-    fun connectUserToServer(userName: String, nickName: String)  {
-
-        SendBird.connect(userName) { username, e ->
-            if (e != null) {
-                Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
-            } else {
-                SendBird.updateCurrentUserInfo(nickName, null) { e ->
-                    if (e != null) {
-                        Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
-                    }
-                    loadFragment( ChatFragment())
-                    /*val intent = Intent(this, UserslistActivity::class.java)
+    fun connectUserToServer(userName: String, nickName: String) {
+        val auth = ServerAuthManager()
+        val returnauth = auth.aunthenticate(userName)
+        if (returnauth) {
+            SendBird.connect(userName) { username, e ->
+                if (e != null) {
+                    Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                } else {
+                    SendBird.updateCurrentUserInfo(nickName, null) { e ->
+                        if (e != null) {
+                            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                        }
+                        loadFragment(ChatFragment())
+                        /*val intent = Intent(this, UserslistActivity::class.java)
                     startActivity(intent)
                     finish()*/
+                    }
                 }
             }
+        }
+        else{
+            Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show()
         }
     }
 }

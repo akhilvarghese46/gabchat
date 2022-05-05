@@ -6,10 +6,12 @@
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/drawable/phone_dial_background.xml" value="0.241" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/activity_channel.xml" value="0.25416666666666665" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/activity_chat.xml" value="0.25416666666666665" />
+        <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/activity_contact.xml" value="0.24010416666666667" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/activity_registration.xml" value="0.24010416666666667" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/activity_userslist.xml" value="0.121875" />
+        <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/activity_voice_call.xml" value="0.25052083333333336" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/card_view_design.xml" value="0.12552083333333333" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/fragment_chat.xml" value="0.25416666666666665" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/fragment_contact.xml" value="0.25052083333333336" />
@@ -17,7 +19,11 @@
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/item_chat_me.xml" value="0.25416666666666665" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/item_chat_other.xml" value="0.25416666666666665" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/item_recive_message.xml" value="0.25416666666666665" />
+        <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/item_send_message.xml" value="0.25416666666666665" />
         <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/member_list_view.xml" value="0.25416666666666665" />
+        <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/layout/notification.xml" value="0.14322916666666666" />
+        <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Sem 1 Griffith College sep/Dissertation/AndroidApplication/GabChat/app/src/main/res/menu/settingsmenu.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

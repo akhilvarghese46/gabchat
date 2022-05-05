@@ -130,7 +130,7 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
                 if (task.isSuccessful) {
                     val user = task.result?.user
                     Toast.makeText(this@LoginActivity, "Login Successfull", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@LoginActivity, Registration::class.java))
+                    startRegistrationActivity()
                 } else {
                     Toast.makeText(this@LoginActivity, "Login Failed", Toast.LENGTH_SHORT).show()
 
@@ -142,9 +142,14 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
         super.onStart()
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            startActivity(Intent(this@LoginActivity, Registration::class.java))
-            finish()
+            startRegistrationActivity()
         }
+    }
+
+    fun startRegistrationActivity()
+    {
+        startActivity(Intent(this@LoginActivity, Registration::class.java))
+        finish()
     }
 
 }

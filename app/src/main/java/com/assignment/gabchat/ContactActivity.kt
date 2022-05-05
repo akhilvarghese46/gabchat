@@ -3,10 +3,7 @@ package com.assignment.gabchat
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.assignment.gabchat.Interface.AddContactClickedListener
@@ -16,25 +13,18 @@ import com.sendbird.android.GroupChannel
 import com.sendbird.android.GroupChannelParams
 import com.sendbird.android.SendBird
 
+class ContactActivity : AppCompatActivity() , AddContactClickedListener {
 
-class ContactFragment : Fragment() , AddContactClickedListener {
-    private lateinit var viewOfLayout: View
+
+    private lateinit var menmbersRecyclerView: RecyclerView
     private val EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL"
 
-    lateinit var recyclerView: RecyclerView
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_contact)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_contact, container, false)
-
-
-        viewOfLayout =inflater.inflate(R.layout.fragment_contact, container, false)
-        recyclerView = viewOfLayout.findViewById<RecyclerView>(R.id.recycler_group_channels)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
+        menmbersRecyclerView = findViewById<RecyclerView>(R.id.recycler_group_channels)
+        menmbersRecyclerView.layoutManager = LinearLayoutManager(this)
 
         val userListQuery = SendBird.createApplicationUserListQuery()
 
@@ -44,23 +34,18 @@ class ContactFragment : Fragment() , AddContactClickedListener {
             } else {
                 var data = ArrayList<ChannelModel>()
 
-                if(!list.isNullOrEmpty())
-                {
+                if (!list.isNullOrEmpty()) {
                     for (s in list) {
-                        data.add(ChannelModel(s.userId,s.nickname,"url"))
+                        data.add(ChannelModel(s.userId, s.nickname, "url"))
                     }
                 }
 
-                val adapter = AddContactAdapter(this,data)
+                val adapter = AddContactAdapter(this, data)
 
-                recyclerView.adapter = adapter
+                menmbersRecyclerView.adapter = adapter
             }
+
         }
-
-
-
-
-        return viewOfLayout
     }
 
     override fun onAddContactListener(channel: ChannelModel) {
@@ -80,11 +65,12 @@ class ContactFragment : Fragment() , AddContactClickedListener {
             if (e != null) {
                 e.message?.let { Log.e("GABCHAT error (chatList):", it) }
             } else {
-                val intent = Intent(activity, ChatActivity::class.java)
+                val intent = Intent(this, ChatActivity::class.java)
                 intent.putExtra(EXTRA_CHANNEL_URL, groupChannel.url)
                 startActivity(intent)
             }
         }
     }
+
 
 }

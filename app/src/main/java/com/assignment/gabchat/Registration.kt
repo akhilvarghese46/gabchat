@@ -32,7 +32,7 @@ class Registration : AppCompatActivity() {
                 Toast.makeText(this, "Enter User Details.", Toast.LENGTH_SHORT).show()
             } else {
 
-                InitializeServerApp()
+                ServerAuthManager()
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("userName", userName.getText().toString())
                 intent.putExtra("userNickName", userNickName.getText().toString())

@@ -2,12 +2,20 @@ package com.assignment.gabchat
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.assignment.gabchat.adapter.MessageAdapter
 import com.sendbird.android.BaseChannel
 import com.sendbird.android.GroupChannel
 import com.sendbird.android.UserMessageParams
+import com.sendbird.calls.DialParams
+import com.sendbird.calls.DirectCall
+import com.sendbird.calls.SendBirdCall
+import com.sendbird.calls.SendBirdException
+import com.sendbird.calls.handler.DialHandler
+import com.sendbird.calls.handler.DirectCallListener
 import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : AppCompatActivity() {
@@ -19,12 +27,18 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var chatChannel: GroupChannel
     private lateinit var channelUrl: String
+    private lateinit var userId:String
+    private lateinit var calleeID:String
+    private var isVideoCall:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
         InitializeValues()
+        userId ="pixel"
+        calleeID = this.intent.getStringExtra("calleeId").toString()
+        calleeID ="abin"
 
 
         /*val back = button_gchat_back
@@ -33,10 +47,110 @@ class ChatActivity : AppCompatActivity() {
        startActivity(intent)
    }
 */
+      /*  btn_voicecall.setOnClickListener {
+            isVideoCall= false
+            authenticateUser()
 
+        }
+        btn_videocall.setOnClickListener {
+
+        }*/
         button_gchat_send.setOnClickListener {
             sendMessage()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId) {
+
+            R.id.audioCall -> {
+                isVideoCall= false
+                authenticateUser()
+                return true
+            }
+            R.id.videoCall -> {
+
+                return true
+            }
+        }
+// it is a requirement to call this at the end of this function if the event has not been
+// handled
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun authenticateUser() {
+        dialPhoneCall()
+
+      /*  val USER_ID = "pixel"
+        val ACCESS_TOKEN: String? = null
+
+        val params = AuthenticateParams(USER_ID)
+            .setAccessToken(ACCESS_TOKEN)
+
+        SendBirdCall.authenticate(params, AuthenticateHandler { user, e ->
+            if (e != null) {
+                e.printStackTrace()
+                e.message?.let { Log.e("GABCHAT error (ChatActivity):", it) }
+
+            } else {
+
+                dialPhoneCall()
+
+            }
+        })*/
+
+       /* SendBirdCall.authenticate(AuthenticateParams(userId)
+        ) { user, e ->
+            if (e == null) {
+                dialPhoneCall()
+            } else {
+                e.message?.let { Log.e("GABCHAT error (ChatActivity):", it) }
+            }
+        }*/
+
+
+
+
+    }
+
+    private fun dialPhoneCall() {
+
+        // Make the call
+        val call = SendBirdCall.dial(DialParams(calleeID).setVideoCall(isVideoCall), object : DialHandler {
+            override fun onResult(call: DirectCall?, e: SendBirdException?) {
+                if (e == null) {
+                    // The call has been created successfully.
+                }
+                else{
+                    e.printStackTrace()
+                    e.message?.let { Log.e("GABCHAT error (diall error):", it) }
+                }
+
+            }
+        })
+        call!!.setListener(object : DirectCallListener() {
+            override fun onEstablished(call: DirectCall) {
+
+            }
+
+            override fun onConnected(call: DirectCall) {
+
+            }
+
+            override fun onEnded(call: DirectCall) {
+
+
+            }
+        })
     }
 
 

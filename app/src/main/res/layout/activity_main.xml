@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,73 +13,96 @@
         android:layout_height="641dp"
         android:layout_above="@+id/layoutMainMenu"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="11dp" />
+        android:layout_marginBottom="11dp" >
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/layoutMainMenu"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="@color/mainBtnColour"
         android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:backgroundTint="@color/mainBtnColour"
+        app:layout_constraintBottom_toBottomOf="parent">
+
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_height="fill_parent"
             android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:gravity="center">
+
             <Button
+                android:id="@+id/btnChatMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-black"
                 android:text="Chat"
                 android:textSize="15dp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/mainBtnColour"
-                android:id="@+id/btnChatMenu"/>
+                app:backgroundTint="@color/mainBtnColour" />
         </LinearLayout>
+
         <View
             android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             app:backgroundTint="@color/white" />
+<!---
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_height="fill_parent"
             android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:gravity="center">
+
             <Button
+                android:id="@+id/btnContactMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fontFamily="sans-serif-black"
                 android:text="Contact"
-                android:fontFamily="sans-serif-black"
                 android:textSize="15dp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/mainBtnColour"
-                android:id="@+id/btnContactMenu"/>
+                app:backgroundTint="@color/mainBtnColour" />
         </LinearLayout>
+-->
         <View
             android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             app:backgroundTint="@color/white" />
+
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_height="fill_parent"
             android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:gravity="center">
+
             <Button
+                android:id="@+id/btnCallMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Call"
                 android:fontFamily="sans-serif-black"
+                android:text="Call"
                 android:textSize="15dp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/mainBtnColour"
-                android:id="@+id/btnCallMenu"/>
+                app:backgroundTint="@color/mainBtnColour" />
         </LinearLayout>
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_createUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.952"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.952"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        tools:ignore="MissingConstraints" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
