@@ -30,7 +30,7 @@ class ContactActivity : AppCompatActivity() , AddContactClickedListener {
 
         userListQuery.next() { list, e ->
             if (e != null) {
-                e.message?.let { Log.e("GABCHAT error (chatList):", it) }
+                e.message?.let { Log.e("GABCHAT error (ContactList):", it) }
             } else {
                 var data = ArrayList<ChannelModel>()
 
@@ -60,10 +60,12 @@ class ContactActivity : AppCompatActivity() , AddContactClickedListener {
 
         params.addUserIds(users)
         params.setOperatorUserIds(operatorId)
+        params.setName(users.toString())
+        params.setDistinct(true)
 
         GroupChannel.createChannel(params) { groupChannel, e ->
             if (e != null) {
-                e.message?.let { Log.e("GABCHAT error (chatList):", it) }
+                e.message?.let { Log.e("GABCHAT error (create contact):", it) }
             } else {
                 val intent = Intent(this, ChatActivity::class.java)
                 intent.putExtra(EXTRA_CHANNEL_URL, groupChannel.url)

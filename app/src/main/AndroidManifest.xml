@@ -4,6 +4,7 @@
     package="com.assignment.gabchat">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -34,7 +35,7 @@ See README(https://goo.gl/l4GJaQ) for more. -->
             android:name=".ContactActivity"
             android:exported="false" />
         <activity
-            android:name=".VoiceCall"
+            android:name=".CallActivity"
             android:exported="false" />
         <activity
             android:name=".ChatActivity"

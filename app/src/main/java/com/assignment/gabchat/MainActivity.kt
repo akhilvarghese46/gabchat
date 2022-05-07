@@ -8,7 +8,9 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.assignment.gabchat.ConstantValues.SendBirdConstantValues
 import com.sendbird.android.SendBird
+import com.sendbird.calls.SendBirdCall
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -16,18 +18,22 @@ class MainActivity : AppCompatActivity() {
     private val fragmentManager = supportFragmentManager
     private lateinit var btnChat: Button
     private lateinit var btnContact: Button
-    
+    private val sbCallId = SendBirdConstantValues.CALL_ID
+    private val isCallAccept = SendBirdConstantValues.CALL_IS_ACCEPTED
+    private val isCallDecline = SendBirdConstantValues.CALL_IS_DECLINED
+
+    companion object {
+        const val INTENT_EXTRA_CALL_ID = "com.sendbird.calls.EXTRA_CALL_ID"
+        const val INTENT_EXTRA_IS_ACCEPTED = "com.sendbird.calls.EXTRA_IS_ACCEPTED"
+        const val INTENT_EXTRA_IS_DECLINED = "com.sendbird.calls.EXTRA_IS_DECLINED"
+        const val REQUEST_CODE_PERMISSION = 0
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
-        /*SendBird.init("8A6041D3-0601-43F7-A01C-D20F4E0C6F8C", this)
-        SendBirdCall.init(applicationContext, "8A6041D3-0601-43F7-A01C-D20F4E0C6F8C")*/
-       /* SendBird.init("35F54875-BF9D-433D-8BD6-4923B035D649", this)
-        SendBirdCall.init(applicationContext, "35F54875-BF9D-433D-8BD6-4923B035D649")
-*/
 
 
         btnChat = findViewById<Button>(R.id.btnChatMenu)
@@ -49,7 +55,16 @@ class MainActivity : AppCompatActivity() {
         }
         initializeData()
 
+        if(sbCallId!=null) {
+            reciveCallFromSB(sbCallId)
+        }
+
+
+
     }
+
+
+
     override fun onCreateOptionsMenu(settingsMenu: Menu?): Boolean {
         menuInflater.inflate(R.menu.settingsmenu, settingsMenu)
         return super.onCreateOptionsMenu(settingsMenu)
@@ -94,14 +109,15 @@ class MainActivity : AppCompatActivity() {
     fun connectUserToServer(userName: String, nickName: String) {
         val auth = ServerAuthManager()
         val returnauth = auth.aunthenticate(userName)
+        //Toast.makeText(this, "return auth :" + returnauth, Toast.LENGTH_LONG).show()
         if (returnauth) {
             SendBird.connect(userName) { username, e ->
                 if (e != null) {
-                    Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "error connect" +e.message, Toast.LENGTH_LONG).show()
                 } else {
                     SendBird.updateCurrentUserInfo(nickName, null) { e ->
                         if (e != null) {
-                            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "error update" + e.message, Toast.LENGTH_LONG).show()
                         }
                         loadFragment(ChatFragment())
                         /*val intent = Intent(this, UserslistActivity::class.java)
@@ -114,6 +130,21 @@ class MainActivity : AppCompatActivity() {
         else{
             Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    //here user will get the call from SB.
+    fun reciveCallFromSB(sbCallId:String){
+        SendBirdCall.getCall(sbCallId)?.let {
+            if (it.isOngoing) {
+                getCallActivity()
+
+            }
+        }
+    }
+
+    private fun getCallActivity() {
+        val intent = Intent(this, CallActivity::class.java)
+        startActivity(intent)
     }
 }
 

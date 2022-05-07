@@ -40,7 +40,7 @@ class ContactFragment : Fragment() , AddContactClickedListener {
 
         userListQuery.next() { list, e ->
             if (e != null) {
-                e.message?.let { Log.e("GABCHAT error (chatList):", it) }
+                e.message?.let { Log.e("GABCHAT error (contact list):", it) }
             } else {
                 var data = ArrayList<ChannelModel>()
 
@@ -78,7 +78,7 @@ class ContactFragment : Fragment() , AddContactClickedListener {
 
         GroupChannel.createChannel(params) { groupChannel, e ->
             if (e != null) {
-                e.message?.let { Log.e("GABCHAT error (chatList):", it) }
+                e.message?.let { Log.e("GABCHAT error (contact create frg):", it) }
             } else {
                 val intent = Intent(activity, ChatActivity::class.java)
                 intent.putExtra(EXTRA_CHANNEL_URL, groupChannel.url)

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.assignment.gabchat.ConstantValues.SharedPreferanceObject
 import com.assignment.gabchat.Interface.ChannelClickedListener
 import com.assignment.gabchat.adapter.MembersChannelAdapter
 import com.assignment.gabchat.dataclass.ChannelModel
@@ -34,14 +35,23 @@ class ChatFragment : Fragment(),ChannelClickedListener {
         val channelList = GroupChannel.createMyGroupChannelListQuery()
         channelList.next { list, e ->
             if (e != null) {
-                e.message?.let { Log.e("GABCHAT error (chatList):", it) }
+                e.message?.let { Log.e("GABCHAT error (chat List):", it) }
             }
             var data = ArrayList<ChannelModel>()
 
             if(!list.isNullOrEmpty())
             {
+
                 for (s in list) {
-                    data.add(ChannelModel(s.members[0].nickname.toString(),s.memberCount.toString(),s.url))
+                    var name = s.members[0].userId.toString()
+                    Log.e("GABCHAT :", "user:"+s.members[0].userId.toString()+"sp:"+SharedPreferanceObject.SBUserId)
+                    if(s.members[0].userId.toString() == SharedPreferanceObject.SBUserId )
+                    {
+                        name =s.name.replace("]","").replace("[","")
+
+                    }
+
+                    data.add(ChannelModel(name,s.memberCount.toString(),s.url))
                 }
             }
 
