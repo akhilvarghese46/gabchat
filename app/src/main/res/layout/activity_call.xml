@@ -8,12 +8,19 @@
     tools:context=".CallActivity"
     android:background="#424141"
     android:padding="10dp">
+    <com.sendbird.calls.SendBirdVideoView
+        android:id="@+id/videocall_otheruser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        tools:ignore="MissingConstraints" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="40dp"
+        android:padding="10dp"
         tools:ignore="MissingConstraints">
+
 
         <LinearLayout
             android:id="@+id/lay_call_info"
@@ -24,26 +31,31 @@
 
             <ImageView
                 android:id="@+id/user_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/gabchat" />
+                android:background="@drawable/user_image" />
 
             <TextView
                 android:id="@+id/txt_userId"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
                 android:text="Akhil"
                 android:textColor="#E1FFFFFF"
                 android:textSize="24sp" />
 
-            <View
+            <TextView
+                android:id="@+id/txt_call_time"
                 android:layout_width="match_parent"
-                android:layout_height="20dp">
-
-            </View>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="#E1FFFFFF"
+                android:textSize="18sp"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:id="@+id/text_Status"
@@ -56,35 +68,73 @@
 
         </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
 
+            <com.sendbird.calls.SendBirdVideoView
+                android:id="@+id/videocall_userown"
+                android:layout_width="93dp"
+                android:layout_height="152dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="266dp" />
 
             <LinearLayout
+                android:id="@+id/btn_ending"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:layout_alignParentBottom="true"
-                android:orientation="vertical">
-<!---
+                android:orientation="horizontal"
+                android:background="#C8C8C8">
+
+                <!---
                 <ImageButton
                     android:id="@+id/btn_Call_end"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginBottom="24dp"
                     android:background="@drawable/end_phone_call" />
--->
-                <com.google.android.material.button.MaterialButton
+
+        -->
+                <ImageView
+                    android:id="@+id/btn_Calbtn_screenshare"
+                    android:layout_width="60dp"
+                    android:layout_height="65dp"
+                    android:layout_marginRight="10sp"
+                    android:text="screen share"
+                    android:visibility="invisible"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/screensharetwo" />
+
+
+                <ImageView
                     android:id="@+id/btn_Call_end"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="end"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="10sp"
+                    android:text="end call"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/end_phone_call"/>
+
+                <ImageView
+                    android:id="@+id/btn_Calbtn_screenshare_end"
+                    android:layout_width="60dp"
+                    android:layout_height="65dp"
+                    android:background="@drawable/stop_screen_share"
+                    android:visibility="invisible"
+                    android:clickable="true"
+                    android:focusable="true"/>
+                <!---app:backgroundTint="@drawable/end_phone_call"
+           android:background="@drawable/end_phone_call" -->
+
             </LinearLayout>
-    </RelativeLayout>
+        </RelativeLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

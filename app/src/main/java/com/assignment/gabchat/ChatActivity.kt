@@ -5,76 +5,85 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.assignment.gabchat.ConstantValues.SendBirdConstantValues
 import com.assignment.gabchat.adapter.MessageAdapter
 import com.sendbird.android.*
 import com.sendbird.calls.DialParams
-import com.sendbird.calls.DirectCall
 import com.sendbird.calls.SendBirdCall
-import com.sendbird.calls.SendBirdException
-import com.sendbird.calls.handler.DialHandler
 import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : AppCompatActivity() {
 
-    private val EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL"
-    private val CHANNEL_HANDLER_ID = "CHANNEL_HANDLER_GROUP_CHANNEL_CHAT"
+    private val EXTRA_CHANNEL_URL = SendBirdConstantValues.EXTRA_CHANNEL_URL
+    private val CHANNEL_HANDLER_ID = SendBirdConstantValues.CHANNEL_HANDLER_ID
 
-    private lateinit var adapter: MessageAdapter
+    private lateinit var adapterMsg: MessageAdapter
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var chatChannel: GroupChannel
-    private lateinit var channelUrl: String
+    private lateinit var currentChannelUrl: String
     private lateinit var calleeID:String
     private var isVideoCall:Boolean = false
+
+    private lateinit var txtMsg:EditText
+    lateinit var btnSendMsg: View
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-
-        InitializeValues()
+        txtMsg  = findViewById(R.id.txt_message)
+        btnSendMsg = findViewById(R.id.btn_send)
         calleeID = this.intent.getStringExtra("calleeId").toString()
-
-
-
-        /*val back = button_gchat_back
-   back.setOnClickListener {
-       val intent = Intent(this, ChannelListActivity::class.java)
-       startActivity(intent)
-   }
-*/
-      /*  btn_voicecall.setOnClickListener {
-            isVideoCall= false
-            authenticateUser()
-
-        }
-        btn_videocall.setOnClickListener {
-
-        }*/
-        button_gchat_send.setOnClickListener {
+        InitializeValues()
+        getChannelData()
+        btnSendMsg.setOnClickListener {
             sendMessage()
         }
     }
 
+    private fun getChannelData() {
+        //get into chatting channel
+        currentChannelUrl = getChannelUrl()
+        GroupChannel.getChannel(currentChannelUrl) { channelData, e ->
+            if (e != null) {
+                e.message?.let { Log.e("GABCHAT error (ChatActivity):", it) }
+            }
+            this.chatChannel = channelData
+            getPrevMessages()
+        }
+
+        //channel handler works when gets msgs. it helps to recive msg on other side
+        SendBird.addChannelHandler(CHANNEL_HANDLER_ID, object : SendBird.ChannelHandler() {
+                override fun onMessageReceived(bs: BaseChannel, baseMessage: BaseMessage){
+                    if (bs.url == currentChannelUrl) {
+                        adapterMsg.addNewMessage(baseMessage)
+                        chatChannel.markAsRead()
+                    }
+                }
+            })
+    }
+
+    //Create option menu for video and audio call
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
-
-
         return super.onCreateOptionsMenu(menu)
     }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when(item.itemId) {
             R.id.audioCall -> {
                 isVideoCall= false
-               dialPhoneCall()
-                //getCallActivity(null)
+                dialPhoneCall()
                 return true
             }
             R.id.videoCall -> {
-
+                isVideoCall= true
+                dialPhoneCall()
                 return true
             }
         }
@@ -82,40 +91,13 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        channelUrl = getChannelURl()
 
-        GroupChannel.getChannel(channelUrl, GroupChannel.GroupChannelGetHandler { groupChannel, e ->
-                if (e != null) {
-                    e.message?.let { Log.e("GABCHAT error (ChatActivity):", it) }
-
-                }
-                this.chatChannel = groupChannel
-                getPrevMessages()
-            })
-
-       SendBird.addChannelHandler(
-            CHANNEL_HANDLER_ID,
-            object : SendBird.ChannelHandler() {
-                override fun onMessageReceived(
-                    baseChannel: BaseChannel,
-                    baseMessage: BaseMessage
-                ){
-                    if (baseChannel.url == channelUrl) {
-                        // Add new message to view
-                        adapter.addFirst(baseMessage)
-                        chatChannel.markAsRead()
-                    }
-                }
-            })
-    }
-
+/*
     override fun onPause() {
         super.onPause()
         SendBird.removeChannelHandler(CHANNEL_HANDLER_ID)
     }
-
+*/
    /* private fun setButtonListeners() {
         /*val back = button_gchat_back
         back.setOnClickListener {
@@ -132,39 +114,39 @@ class ChatActivity : AppCompatActivity() {
 */
     private fun sendMessage()
     {
-        val params = UserMessageParams()
-            .setMessage(edit_gchat_message.text.toString())
-        chatChannel.sendUserMessage(params,
-            BaseChannel.SendUserMessageHandler { userMessage, e ->
-                if (e != null) {    // Error.
+        val msgParam = UserMessageParams().setMessage(txtMsg.text.toString())
+        chatChannel.sendUserMessage(msgParam,
+            BaseChannel.SendUserMessageHandler { msg, e ->
+                if (e != null) {
+                    e.message?.let { Log.e("GABCHAT error (sendmessage):", it) }
                     return@SendUserMessageHandler
                 }
-                adapter.addFirst(userMessage)
-                edit_gchat_message.text.clear()
+                adapterMsg.addNewMessage(msg)
+                txtMsg.text.clear()
             })
     }
 
 
 
     private fun getPrevMessages() {
-
         val prevMsgList = chatChannel.createPreviousMessageListQuery()
-
         prevMsgList.load(100, true) { messages, e ->
             if (e != null) {
-                e.message?.let { Log.e("GABCHAT error (ChatActivity):", it) }
+                e.message?.let { Log.e("GABCHAT error (previous message):", it) }
             }
-            adapter.loadMessages(messages!!)
+            adapterMsg.loadPrevMsgs(messages!!)
         }
 
     }
 
 
     private fun InitializeValues() {
-        adapter = MessageAdapter(this)
-        chatRecyclerView = recycler_gchat
-        chatRecyclerView.adapter = adapter
         val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+
+        adapterMsg = MessageAdapter(this)
+        chatRecyclerView = recycler_message_data
+        chatRecyclerView.adapter = adapterMsg
+
         layoutManager.reverseLayout = true
         chatRecyclerView.layoutManager = layoutManager
         chatRecyclerView.scrollToPosition(0)
@@ -172,85 +154,31 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-    private fun getChannelURl(): String {
+    private fun getChannelUrl(): String {
         val intent = this.intent
         return intent.getStringExtra(EXTRA_CHANNEL_URL).toString()
     }
 
 
-    //Call initialization and dialing
 
-    /*
-    private fun authenticateUser() {
-        //dialPhoneCall()
-
-      /*  val USER_ID = "pixel"
-        val ACCESS_TOKEN: String? = null
-
-        val params = AuthenticateParams(USER_ID)
-            .setAccessToken(ACCESS_TOKEN)
-
-        SendBirdCall.authenticate(params, AuthenticateHandler { user, e ->
-            if (e != null) {
-                e.printStackTrace()
-                e.message?.let { Log.e("GABCHAT error (ChatActivity):", it) }
-
-            } else {
-
-                dialPhoneCall()
-
-            }
-        })*/
-
-       /* SendBirdCall.authenticate(AuthenticateParams(userId)
-        ) { user, e ->
-            if (e == null) {
-                dialPhoneCall()
-            } else {
-                e.message?.let { Log.e("GABCHAT error (ChatActivity):", it) }
-            }
-        }*/
-
-
-
-
-    }
-*/
     private fun dialPhoneCall() {
-        val callData = SendBirdCall.dial(DialParams(calleeID).setVideoCall(isVideoCall), object : DialHandler {
-            override fun onResult(call: DirectCall?, e: SendBirdException?) {
-                if (e == null) {
-                    Log.e("GABCHAT error (diall CollerID):", call!!.callId.toString())
-                    // The call has been created successfully.
-                    getCallActivity(call!!.callId)
-                }
-                else{
-                    e.printStackTrace()
-                    e.message?.let { Log.e("GABCHAT error (diall error):", it) }
-                }
-
+        val callData = SendBirdCall.dial(DialParams(calleeID).setVideoCall(isVideoCall)
+        ) { call, e ->
+            if (e == null) {
+                Log.e("GABCHAT The call has been created successfully.", call!!.callId.toString())
+                getCallActivity(call!!.callId, isVideoCall)
+            } else {
+                e.printStackTrace()
+                e.message?.let { Log.e("GABCHAT error (diall error):", it) }
             }
-        })
-        /*
-        callData!!.setListener(object : DirectCallListener() {
-            override fun onEstablished(call: DirectCall) {
+        }
 
-            }
-
-            override fun onConnected(call: DirectCall) {
-
-            }
-
-            override fun onEnded(call: DirectCall) {
-
-
-            }
-        })*/
     }
 
-    private fun getCallActivity(callId: String?) {
+    private fun getCallActivity(callId: String?, isVideoCall: Boolean) {
         val intent = Intent(this, CallActivity::class.java)
         intent.putExtra("SB_CALLID", callId)
+        intent.putExtra("isVideoCall", isVideoCall)
         startActivity(intent)
     }
 

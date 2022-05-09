@@ -5,38 +5,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.assignment.gabchat.ConstantValues.SendBirdConstantValues
 import com.assignment.gabchat.R
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.assignment.gabchat.TimeMange
 import com.sendbird.android.BaseMessage
 import com.sendbird.android.SendBird
 import com.sendbird.android.UserMessage
-import kotlinx.android.synthetic.main.item_send_message.view.*
 import kotlinx.android.synthetic.main.item_recive_message.view.*
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlinx.android.synthetic.main.item_send_message.view.*
 
 class MessageAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    private val VIEW_TYPE_USER_MESSAGE_ME = 10
-    private val VIEW_TYPE_USER_MESSAGE_OTHER = 11
+    private val userMessage = SendBirdConstantValues.USER_MESSAGE
+    private val otherMessage = SendBirdConstantValues.USER_MESSAGE_OTHER
 
-    private var messages: MutableList<BaseMessage>
-    private var context: Context
+    private var messageData: MutableList<BaseMessage> = ArrayList()
+    private var context: Context = context
+    private var userId: String = SendBird.getCurrentUser().userId
 
-    init {
-        messages = ArrayList()
-        this.context = context
-    }
 
-    fun loadMessages(messages: MutableList<BaseMessage>) {
-        this.messages = messages
+    fun loadPrevMsgs(messages: MutableList<BaseMessage>) {
+        this.messageData = messages
         notifyDataSetChanged()
     }
 
-    fun addFirst(message: BaseMessage) {
-        messages.add(0, message)
+    fun addNewMessage(message: BaseMessage) {
+        messageData.add(0, message)
         notifyDataSetChanged()
     }
 
@@ -44,104 +39,94 @@ class MessageAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewH
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
 
-        return when(viewType) {
-            VIEW_TYPE_USER_MESSAGE_ME  -> {
-                MyUserHolder(layoutInflater.inflate(R.layout.item_send_message, parent, false))
+        return when (viewType) {
+            userMessage -> {
+                UserViewHolder(layoutInflater.inflate(R.layout.item_send_message, parent, false))
             }
-            VIEW_TYPE_USER_MESSAGE_OTHER ->  {
-                OtherUserHolder(layoutInflater.inflate(R.layout.item_recive_message, parent, false))
+            otherMessage -> {
+                OtherUserViewHolder(
+                    layoutInflater.inflate(
+                        R.layout.item_recive_message,
+                        parent,
+                        false
+                    )
+                )
             }
-            else -> MyUserHolder(layoutInflater.inflate(R.layout.item_send_message, parent, false)) //Generic return
-
+            else ->
+                UserViewHolder(layoutInflater.inflate(R.layout.item_send_message, parent, false))
         }
     }
 
     override fun getItemViewType(position: Int): Int {
 
-        val message = messages.get(position)
-
-        when (message) {
+        when (val msg = messageData.get(position)) {
             is UserMessage -> {
-                if (message.sender.userId.equals(SendBird.getCurrentUser().userId)) return VIEW_TYPE_USER_MESSAGE_ME
-                else return VIEW_TYPE_USER_MESSAGE_OTHER
+                if (msg.sender.userId == userId)
+                    return userMessage
+                else
+                    return otherMessage
             }
-            //Handle other types of messages FILE/ADMIN ETC
-            else ->  return -1
+            else -> return -1
         }
     }
 
-    override fun getItemCount() = messages.size
+    override fun getItemCount() = messageData.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         when (holder.itemViewType) {
-            VIEW_TYPE_USER_MESSAGE_ME -> {
-                holder as MyUserHolder
-                holder.bindView(context, messages.get(position) as UserMessage)
+            userMessage -> {
+                holder as UserViewHolder
+                holder.bindView(context, messageData[position] as UserMessage)
             }
-            VIEW_TYPE_USER_MESSAGE_OTHER -> {
-                holder as OtherUserHolder
-                holder.bindView(context, messages.get(position) as UserMessage)
+            otherMessage -> {
+                holder as OtherUserViewHolder
+                holder.bindView(context, messageData[position] as UserMessage)
             }
-            //Handle other types of messages FILE/ADMIN ETC
         }
-
     }
 
-    class MyUserHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var timeMang = TimeMange()
+        val txtMsg = view.txt_user_msg
+        val date = view.txt_date
+        val msgDate = view.text_gchat_timestamp_me
 
-        val messageText = view.text_gchat_message_me
-        val date = view.text_gchat_date_me
-        val messageDate = view.text_gchat_timestamp_me
-
-        fun bindView(context: Context, message: UserMessage) {
-
-            messageText.setText(message.message)
-            messageDate.text = DateUtil.formatTime(message.createdAt)
-
+        fun bindView(context: Context, msg: UserMessage) {
             date.visibility = View.VISIBLE
-            date.text = DateUtil.formatDate(message.createdAt)
+            txtMsg.setText(msg.message)
+            msgDate.text = timeMang.time(msg.createdAt)
+            date.text = timeMang.date(msg.createdAt)
         }
     }
 
-    class OtherUserHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class OtherUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var timeMang = TimeMange()
 
-        val messageText = view.text_gchat_message_other
+        val txtMsg = view.text_gchat_message_other
         val date = view.text_gchat_date_other
         val timestamp = view.text_gchat_timestamp_other
-        val profileImage = view.image_gchat_profile_other
-        val user = view.text_gchat_user_other
-
+       // val profileImage = view.image_gchat_profile_other
+       // val user = view.text_gchat_user_other
 
 
         fun bindView(context: Context, message: UserMessage) {
-
-            messageText.setText(message.message)
-
-            timestamp.text = DateUtil.formatTime(message.createdAt)
-
             date.visibility = View.VISIBLE
-            date.text = DateUtil.formatDate(message.createdAt)
+            txtMsg.setText(message.message)
 
-            Glide.with(context).load(message.sender.profileUrl).apply(RequestOptions().override(75, 75))
-                .into(profileImage)
-            user.text = message.sender.nickname
+            timestamp.text = timeMang.time(message.createdAt)
+
+
+            date.text = timeMang.date(message.createdAt)
+
+           // Glide.with(context).load(message.sender.profileUrl)
+               // .apply(RequestOptions().override(75, 75))
+               // .into(profileImage)
+            //user.text = message.sender.nickname
 
         }
 
     }
 
-    object DateUtil {
-        fun formatTime(timeInMillis: Long): String {
-            val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-            return dateFormat.format(timeInMillis)
-        }
 
-
-        fun formatDate(timeInMillis: Long): String {
-            val dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
-            return dateFormat.format(timeInMillis)
-        }
-    }
 
 }

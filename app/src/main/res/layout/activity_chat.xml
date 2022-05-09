@@ -3,75 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<!---
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/layout_group_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_gchannel"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/Widget.AppCompat.Toolbar"
-            app:popupTheme="@style/Theme.AppCompat.Light">
-
-            <TextView
-                android:id="@+id/button_gchat_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Back"
-                android:layout_marginTop="16dp"
-                android:textColor="#e0e0e0"
-                android:textSize="20sp"
-                />
-            <Button
-                android:id="@+id/btn_voicecall"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="voice call"/>
-            <Button
-                android:id="@+id/btn_videocall"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Video call"/>
-
-
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>-->
+    android:layout_height="match_parent"
+    android:padding="5dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_gchat"
-        android:layout_width="406dp"
+        android:id="@+id/recycler_message_data"
+        android:layout_width="match_parent"
         android:layout_height="649dp"
         android:layout_marginBottom="16dp"
         app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@+id/text_gchat_indicator"
+        app:layout_constraintBottom_toTopOf="@+id/strightline"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/text_gchat_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/view"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <View
-        android:id="@+id/view"
+        android:id="@+id/strightline"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#e0e0e0"
-        app:layout_constraintBottom_toTopOf="@+id/layout_gchat_chatbox" />
+        app:layout_constraintBottom_toTopOf="@+id/layout_msg" />
 
     <RelativeLayout
-        android:id="@+id/layout_gchat_chatbox"
+        android:id="@+id/layout_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -79,21 +31,17 @@
 
 
         <EditText
-            android:id="@+id/edit_gchat_message"
+            android:id="@+id/txt_message"
             android:layout_width="329dp"
             android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="2dp"
-            android:layout_toStartOf="@+id/button_gchat_send"
-            android:background="@android:color/transparent"
             android:hint="Enter Message"
             android:inputType="text"
-            android:maxLines="6"
-            tools:ignore="Autofill" />
+            android:layout_toStartOf="@+id/btn_send"
+            android:background="@android:color/transparent"
+             />
 
         <ImageButton
-            android:id="@+id/button_gchat_send"
+            android:id="@+id/btn_send"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"

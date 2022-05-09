@@ -8,9 +8,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.assignment.gabchat.ConstantValues.SendBirdConstantValues
 import com.sendbird.android.SendBird
-import com.sendbird.calls.SendBirdCall
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -18,16 +16,8 @@ class MainActivity : AppCompatActivity() {
     private val fragmentManager = supportFragmentManager
     private lateinit var btnChat: Button
     private lateinit var btnContact: Button
-    private val sbCallId = SendBirdConstantValues.CALL_ID
-    private val isCallAccept = SendBirdConstantValues.CALL_IS_ACCEPTED
-    private val isCallDecline = SendBirdConstantValues.CALL_IS_DECLINED
 
-    companion object {
-        const val INTENT_EXTRA_CALL_ID = "com.sendbird.calls.EXTRA_CALL_ID"
-        const val INTENT_EXTRA_IS_ACCEPTED = "com.sendbird.calls.EXTRA_IS_ACCEPTED"
-        const val INTENT_EXTRA_IS_DECLINED = "com.sendbird.calls.EXTRA_IS_DECLINED"
-        const val REQUEST_CODE_PERMISSION = 0
-    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,9 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
         initializeData()
 
-        if(sbCallId!=null) {
-            reciveCallFromSB(sbCallId)
-        }
+
 
 
 
@@ -132,15 +120,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //here user will get the call from SB.
-    fun reciveCallFromSB(sbCallId:String){
-        SendBirdCall.getCall(sbCallId)?.let {
-            if (it.isOngoing) {
-                getCallActivity()
 
-            }
-        }
-    }
 
     private fun getCallActivity() {
         val intent = Intent(this, CallActivity::class.java)
