@@ -14,6 +14,7 @@ class BaseApplication : Application() {
         SendBird.init(SENDBIRD_API_ID, applicationContext)
         SendBirdCall.init(applicationContext, SENDBIRD_API_ID)
         //SendBirdCall.setLoggerLevel(SendBirdCall.LOGGER_INFO)
+
     }
     companion object {
         const val SENDBIRD_API_ID = "8A6041D3-0601-43F7-A01C-D20F4E0C6F8C"

@@ -38,6 +38,8 @@ class CallActivity : AppCompatActivity() {
     lateinit var btnScreenShareEnd: View
     lateinit var mediaManager: MediaProjectionManager
 
+    private lateinit var ssDetect: ScreenShortDetectionManager
+
     var isVideoCall: Boolean = false
     var callId: String? = null
     lateinit var fcmCallAccepted: String
@@ -47,6 +49,10 @@ class CallActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         isVideoCall = this.intent.getBooleanExtra("isVideoCall", false)
         setContentView(R.layout.activity_call)
+
+        ssDetect = ScreenShortDetectionManager(baseContext)
+        var calleeID = this.intent?.getStringExtra("calleeID")
+        ssDetect.calleeId = calleeID.toString()
 
         callStatus = findViewById(R.id.text_Status)
         callTime = findViewById(R.id.txt_call_time)
@@ -67,6 +73,8 @@ class CallActivity : AppCompatActivity() {
 
         sbCallId = this.intent?.getStringExtra("SB_CALLID")
         callId = this.intent?.getStringExtra("CALL_ID")
+
+
         fcmCallAccepted = this.intent.getStringExtra("isfcmAccepted").toString()
 
         if (sbCallId == null && SharedPreferanceObject.SB_CALL_ID_FCM != null) {
@@ -229,6 +237,7 @@ class CallActivity : AppCompatActivity() {
              }
 
              override fun onEnded(call: DirectCall) {
+
                  callStatus.text ="END"
                  calltimer.cancel()
                  stopFcmCallServices()
@@ -296,5 +305,17 @@ class CallActivity : AppCompatActivity() {
         return
         //val intent = Intent(this, MainActivity::class.java)
        // startActivity(intent)
+    }
+
+
+    //Screenshort detection
+    override fun onStart() {
+        super.onStart()
+        ssDetect.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        ssDetect.stop()
     }
 }

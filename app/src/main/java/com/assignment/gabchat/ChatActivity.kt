@@ -31,6 +31,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var txtMsg:EditText
     lateinit var btnSendMsg: View
 
+    private val READ_EXTERNAL_STORAGE_REQUEST = 0x1045
+    private lateinit var ssDetect: ScreenShortDetectionManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,10 @@ class ChatActivity : AppCompatActivity() {
         calleeID = this.intent.getStringExtra("calleeId").toString()
         InitializeValues()
         getChannelData()
+
+        ssDetect = ScreenShortDetectionManager(baseContext)
+        ssDetect.calleeId = calleeID
+
         btnSendMsg.setOnClickListener {
             sendMessage()
         }
@@ -178,8 +185,20 @@ class ChatActivity : AppCompatActivity() {
     private fun getCallActivity(callId: String?, isVideoCall: Boolean) {
         val intent = Intent(this, CallActivity::class.java)
         intent.putExtra("SB_CALLID", callId)
+        intent.putExtra("calleeID", calleeID)
         intent.putExtra("isVideoCall", isVideoCall)
         startActivity(intent)
+    }
+
+    //Screenshort detection
+    override fun onStart() {
+        super.onStart()
+        ssDetect.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        ssDetect.stop()
     }
 
 }

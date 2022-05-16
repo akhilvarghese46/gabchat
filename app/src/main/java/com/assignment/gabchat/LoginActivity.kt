@@ -3,12 +3,14 @@ package com.assignment.gabchat
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.assignment.gabchat.ConstantValues.SharedPreferanceObject
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -82,6 +84,7 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     }
 
     private fun generateOTPVerification(phonNumber: String) {
+        Log.e("login activity phone numer:","+"+countryCode+phonNumber.toString())
         val options = PhoneAuthOptions.newBuilder(firAuth)
             .setPhoneNumber("+"+countryCode+phonNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -101,6 +104,7 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
+                Log.e("login activity error:","+"+e.toString())
                 Toast.makeText(this@LoginActivity, "Verification Failed", Toast.LENGTH_SHORT).show()
             }
 
@@ -141,13 +145,20 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     override fun onStart() {
         super.onStart()
         val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null) {
-            startRegistrationActivity()
+        if (currentUser != null &&   SharedPreferanceObject.SBUserId != null ) {
+            startMainActivity( SharedPreferanceObject.SBUserId.toString())
         }
     }
 
-    fun startRegistrationActivity()
-    {
+    private fun startMainActivity(userName: String) {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        intent.putExtra("userName", userName)
+        intent.putExtra("userNickName", userName)
+        startActivity(intent)
+
+    }
+
+    fun startRegistrationActivity() {
         startActivity(Intent(this@LoginActivity, Registration::class.java))
         finish()
     }
