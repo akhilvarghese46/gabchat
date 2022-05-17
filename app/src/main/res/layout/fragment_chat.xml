@@ -5,15 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ChatFragment"
-
-   >
+    android:background="@drawable/bgimage">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_group_channels"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#D5974A"
-        >
+        android:layout_height="match_parent"
+        android:background="@drawable/bgimage">
 
     </androidx.recyclerview.widget.RecyclerView>
 

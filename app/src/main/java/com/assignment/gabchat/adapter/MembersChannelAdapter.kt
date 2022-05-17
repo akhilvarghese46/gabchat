@@ -12,28 +12,20 @@ import com.assignment.gabchat.dataclass.ChannelModel
 
 class MembersChannelAdapter(private val channelClickListener: ChannelClickedListener, private val mList: List<ChannelModel>) : RecyclerView.Adapter<MembersChannelAdapter.ViewHolder>() {
 
-
-
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.member_list_view, parent, false)
-
+            .inflate(R.layout.item_members, parent, false)
         return ViewHolder(view)
     }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val ItemsViewModel = mList[position]
-
         holder.membersName.text = ItemsViewModel.userName
-
         holder.itemView.setOnClickListener {
             channelClickListener.onChannelListener(ItemsViewModel)
         }
-
     }
 
     // return the number of the items in the list
@@ -45,7 +37,5 @@ class MembersChannelAdapter(private val channelClickListener: ChannelClickedList
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
        // val imageView: ImageView = itemView.findViewById(R.id.imageview)
         val membersName: TextView = itemView.findViewById(R.id.txt_membername)
-
-
     }
 }

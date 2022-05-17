@@ -5,94 +5,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:layout_margin="10dp">
+    android:background="@drawable/bgimage"
+   >
 
-    <FrameLayout
-        android:id="@+id/mainDataFragment"
-        android:layout_width="match_parent"
-        android:layout_height="641dp"
-        android:layout_above="@+id/layoutMainMenu"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="11dp"
-        tools:ignore="MissingConstraints">
-
-    </FrameLayout>
-
+    <!-- TextView of the Activity -->
     <LinearLayout
-        android:id="@+id/layoutMainMenu"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:backgroundTint="@color/mainBtnColour"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:id="@+id/layoutMainMenu"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="#1A7BA8">
 
-            <Button
-                android:id="@+id/btnChatMenu"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-black"
-                android:text="Chat"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/mainBtnColour" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                >
+
+                <Button
+                    android:id="@+id/btnChatMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Chat"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/button_cureved"></Button>
+            </LinearLayout>
+
+
+    <!---
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnContactMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Contact"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/mainBtnColour" />
+            </LinearLayout>
+    -->
+            <View
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                app:backgroundTint="@color/white" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnCallMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Call"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/button_cureved" />
+            </LinearLayout>
         </LinearLayout>
+        <FrameLayout
+            android:id="@+id/mainDataFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layoutMainMenu"
+            tools:ignore="MissingConstraints">
 
-        <View
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            app:backgroundTint="@color/white" />
-<!---
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center">
+        </FrameLayout>
 
-            <Button
-                android:id="@+id/btnContactMenu"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-black"
-                android:text="Contact"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/mainBtnColour" />
-        </LinearLayout>
--->
-        <View
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            app:backgroundTint="@color/white" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/btnCallMenu"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-black"
-                android:text="Call"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/mainBtnColour" />
-        </LinearLayout>
     </LinearLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_createUser"
         android:layout_width="wrap_content"

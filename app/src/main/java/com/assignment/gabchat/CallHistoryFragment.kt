@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.assignment.gabchat.adapter.HistoryRecyclerViewAdapter
+import com.assignment.gabchat.adapter.CallHistoryAdapter
 import com.sendbird.calls.DirectCallLog
 import com.sendbird.calls.DirectCallLogListQuery
 import com.sendbird.calls.SendBirdCall.createDirectCallLogListQuery
@@ -28,6 +28,7 @@ class CallHistoryFragment :  Fragment(){
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val params = DirectCallLogListQuery.Params()
+        params.setLimit(100)
         callHistoryQuery = createDirectCallLogListQuery(params)
 
         callHistoryQuery!!.next(object : DirectCallLogListQueryResultHandler {
@@ -35,8 +36,8 @@ class CallHistoryFragment :  Fragment(){
                 if (e == null) {
                     if (callHistoryQuery!!.hasNext() && !callHistoryQuery!!.isLoading) {
 
-                        val adapter = getContext()?.let { HistoryRecyclerViewAdapter(it) }
-                        adapter?.setCallLogs(callLogs)
+                        val adapter = getContext()?.let { CallHistoryAdapter(it) }
+                        adapter?.getCallLogo(callLogs)
                         adapter?.notifyDataSetChanged()
                         recyclerView.adapter = adapter
 

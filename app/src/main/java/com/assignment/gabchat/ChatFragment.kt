@@ -25,8 +25,7 @@ class ChatFragment : Fragment(),ChannelClickedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-     //   return inflater.inflate(R.layout.fragment_chat, container, false)
+
 
         viewOfLayout =inflater.inflate(R.layout.fragment_chat, container, false)
         recyclerView = viewOfLayout.findViewById<RecyclerView>(R.id.recycler_group_channels)
@@ -44,7 +43,7 @@ class ChatFragment : Fragment(),ChannelClickedListener {
 
                 for (s in list) {
                     var name = s.members[0].userId.toString()
-                    Log.e("GABCHAT :", "user:"+s.members[0].userId.toString()+"sp:"+SharedPreferanceObject.SBUserId)
+                    //Log.e("GABCHAT :", "user:"+s.members[0].userId.toString()+"sp:"+SharedPreferanceObject.SBUserId)
                     if(s.members[0].userId.toString() == SharedPreferanceObject.SBUserId )
                     {
                         name =s.name.replace("]","").replace("[","")
@@ -61,7 +60,6 @@ class ChatFragment : Fragment(),ChannelClickedListener {
             recyclerView.adapter = adapter
 
         }
-
 
 
         return viewOfLayout

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.assignment.gabchat.AesEncryption
 import com.assignment.gabchat.ConstantValues.SendBirdConstantValues
 import com.assignment.gabchat.R
 import com.assignment.gabchat.TimeMange
@@ -90,10 +91,12 @@ class MessageAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewH
         val txtMsg = view.txt_user_msg
         val date = view.txt_date
         val msgDate = view.text_gchat_timestamp_me
+        val msgDec: AesEncryption = AesEncryption()
 
         fun bindView(context: Context, msg: UserMessage) {
+
             date.visibility = View.VISIBLE
-            txtMsg.setText(msg.message)
+            txtMsg.setText(msgDec.decryption(msg.message.toString()))
             msgDate.text = timeMang.time(msg.createdAt)
             date.text = timeMang.date(msg.createdAt)
         }
@@ -102,21 +105,19 @@ class MessageAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewH
     class OtherUserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var timeMang = TimeMange()
 
-        val txtMsg = view.text_gchat_message_other
-        val date = view.text_gchat_date_other
-        val timestamp = view.text_gchat_timestamp_other
+        val txtMsg = view.txt_other_msg
+        val date = view.txt_other_date
+        val timestamp = view.txt_other_time
+        val msgDec: AesEncryption = AesEncryption()
        // val profileImage = view.image_gchat_profile_other
        // val user = view.text_gchat_user_other
 
 
-        fun bindView(context: Context, message: UserMessage) {
+        fun bindView(context: Context, otherMsg: UserMessage) {
             date.visibility = View.VISIBLE
-            txtMsg.setText(message.message)
-
-            timestamp.text = timeMang.time(message.createdAt)
-
-
-            date.text = timeMang.date(message.createdAt)
+            txtMsg.setText(msgDec.decryption(otherMsg.message))
+            timestamp.text = timeMang.time(otherMsg.createdAt)
+            date.text = timeMang.date(otherMsg.createdAt)
 
            // Glide.with(context).load(message.sender.profileUrl)
                // .apply(RequestOptions().override(75, 75))

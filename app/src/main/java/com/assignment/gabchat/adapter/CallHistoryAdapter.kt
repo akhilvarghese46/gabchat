@@ -1,50 +1,86 @@
 package com.assignment.gabchat.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.assignment.gabchat.R
-import com.assignment.gabchat.dataclass.ChannelModel
+import com.sendbird.calls.DirectCallLog
+import com.sendbird.calls.DirectCallUser
+import com.sendbird.calls.DirectCallUserRole
+import java.text.SimpleDateFormat
+import java.util.*
 
+class CallHistoryAdapter(private var context: Context) : RecyclerView.Adapter<CallHistoryAdapter.callHistoryHolder?>() {
 
-class CallHistoryAdapter( private val mList: List<ChannelModel>) : RecyclerView.Adapter<CallHistoryAdapter.ViewHolder>() {
-
-
-
-    // create new views
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_call_history, parent, false)
-
-        return ViewHolder(view)
+    var callLog: MutableList<DirectCallLog> = ArrayList()
+    fun getCallLogo(callLogs: List<DirectCallLog>?) {
+        callLog.clear()
+        callLog.addAll(callLogs!!)
     }
 
+    fun getDateString(timeMs: Long): String? {
+        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy H:mm", Locale.getDefault())
+        val dateString = simpleDateFormat.format(Date(timeMs))
+        return dateString.toLowerCase()
+    }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): callHistoryHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_call_history, parent, false)
+        return callHistoryHolder(itemView)
+    }
 
-        val ItemsViewModel = mList[position]
+    override fun onBindViewHolder(holder: callHistoryHolder, pos: Int) {
+        val callLog = callLog[pos]
+        val userRole = callLog.myRole
+        val user: DirectCallUser?
+        if (userRole == DirectCallUserRole.CALLER) {
+            user = callLog.callee
+            if (callLog.isVideoCall) {
+                holder.imgCallWay.setBackgroundResource(R.drawable.incomming_calls)
+                holder.imgVideAudio.setBackgroundResource(R.drawable.video_call)
+            } else {
+                holder.imgCallWay.setBackgroundResource(R.drawable.outgoing_calls)
+                holder.imgVideAudio.setBackgroundResource(R.drawable.phone_dial)
+            }
+        } else {
+            user = callLog.caller
+            if (callLog.isVideoCall) {
+                holder.imgCallWay.setBackgroundResource(R.drawable.incomming_calls)
+                holder.imgVideAudio.setBackgroundResource(R.drawable.video_call)
+            } else {
+                holder.imgCallWay.setBackgroundResource(R.drawable.outgoing_calls)
+                holder.imgVideAudio.setBackgroundResource(R.drawable.phone_dial)
+            }
+        }
 
-        holder.membersName.text = ItemsViewModel.userName
-
-       /* holder.itemView.setOnClickListener {
-            addContactClickedListener.onAddContactListener(ItemsViewModel)
-        }*/
+        holder.txtUserId.text= user!!.userId.toString()
+        holder.txtDate.text = getDateString(callLog.startedAt)
 
     }
 
-    // return the number of the items in the list
     override fun getItemCount(): Int {
-        return mList.size
+        return callLog.size
+    }
+
+     class callHistoryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imgCallWay: ImageView
+        val txtUserId: TextView
+        val txtDate: TextView
+        val imgVideAudio: ImageView
+
+
+        init {
+            imgCallWay = itemView.findViewById(R.id.img_call_way)
+            txtUserId = itemView.findViewById(R.id.txt_username)
+            txtDate = itemView.findViewById(R.id.txt_date)
+            imgVideAudio = itemView.findViewById(R.id.img_audio_video)
+
+        }
     }
 
 
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        // val imageView: ImageView = itemView.findViewById(R.id.imageview)
-        val membersName: TextView = itemView.findViewById(R.id.txt_membername)
-
-
-    }
 }

@@ -30,6 +30,11 @@ class Registration : AppCompatActivity() {
         userNickName = findViewById<EditText>(R.id.edtNickName)
         userPhone = findViewById<TextView>(R.id.edtPhoneNumber)
 
+        if(SharedPreferanceObject.phoneNumber.toString() != null)
+        {
+            userPhone.text =SharedPreferanceObject.phoneNumber.toString()
+        }
+
         btnSubmitUserDetails.setOnClickListener{
             if (TextUtils.isEmpty(userName.getText().toString())||TextUtils.isEmpty(userNickName.getText().toString())) {
                 Toast.makeText(this, "Enter User Details.", Toast.LENGTH_SHORT).show()

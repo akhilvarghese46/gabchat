@@ -51,6 +51,16 @@ object SharedPreferanceObject {
             field = value
         }
 
+
+    var phoneNumber: String? = null
+        get() {
+            return spPre.getString("phoneNumber", null)
+        }
+        set(value) {
+
+            field = spPre.edit().putString("phoneNumber", value).apply().toString()
+        }
+
     fun createSP(context: Context) {
         spPre = context.getSharedPreferences("GabChatSpData", Context.MODE_PRIVATE)
     }

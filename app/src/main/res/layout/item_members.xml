@@ -9,31 +9,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#C9EEF3"
+        android:background="#2DA7DF"
         android:padding="5dp"
         tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/img_user"
             android:layout_width="40dp"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:background="@drawable/user_image"/>
 
         <TextView
             android:id="@+id/txt_membername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Member Name"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="bold"
-            android:textColor="#000000"/>
+            android:textColor="#FFFFFF"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="#5E595B"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="55dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

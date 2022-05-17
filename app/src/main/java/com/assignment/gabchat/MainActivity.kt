@@ -1,6 +1,7 @@
 package com.assignment.gabchat
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -10,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -45,6 +47,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setToolBar()
+
+
         getMessage(SharedPreferanceObject.SBUserId.toString())
 
         btnChat = findViewById<Button>(R.id.btnChatMenu)
@@ -77,6 +82,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("RestrictedApi")
+    private fun setToolBar() {
+
+        var actionBar: ActionBar = getSupportActionBar()!!
+        if(actionBar != null) {
+            actionBar.setTitle("GabChat")
+        }
+
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setDisplayUseLogoEnabled(true)
+
+    }
 
 
     override fun onCreateOptionsMenu(settingsMenu: Menu?): Boolean {
@@ -89,7 +106,8 @@ class MainActivity : AppCompatActivity() {
         when(item.itemId) {
 
             R.id.settings -> {
-
+                val intent = Intent(this@MainActivity, SettingActivity::class.java)
+                startActivity(intent)
                 return true
             }
             R.id.logOut -> {
@@ -98,13 +116,11 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         }
-// it is a requirement to call this at the end of this function if the event has not been
-// handled
+
         return super.onOptionsItemSelected(item)
     }
 
     private fun logoutUser() {
-
         SharedPreferanceObject.SBUserId = null
         SharedPreferanceObject.SB_IS_DECLINED_FCM = false
         SharedPreferanceObject.SB_IS_ACCEPTED_FCM = false
@@ -115,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResult(e: SendBirdException?) {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
-                this@MainActivity.finish()
+                //this@MainActivity.finish()
             }
         })
     }

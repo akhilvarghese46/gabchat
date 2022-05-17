@@ -18,6 +18,7 @@ class BaseApplication : Application() {
     }
     companion object {
         const val SENDBIRD_API_ID = "8A6041D3-0601-43F7-A01C-D20F4E0C6F8C"
+        const val MESSAGE_SECERT_KEY = "GABCHAT_MESSAGING_123"
     }
 
 }

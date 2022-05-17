@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Registration"
+    tools:context=".SettingActivity"
     android:background="@drawable/bgimage"
     android:layout_gravity="center">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,9 +24,11 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/common_google_signin_btn_icon_dark_normal" />
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/user_image" />
 
-        <EditText
+        <TextView
             android:id="@+id/edtUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,14 +38,7 @@
             android:hint=" User Name"
             android:importantForAutofill="no"
             android:inputType="textPersonName" />
-        <EditText
-            android:id="@+id/edtNickName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="18dp"
-            android:hint="User Nick Name"
-            android:inputType="textPostalAddress" />
+
 
         <!--EditText for adding employee phone-->
         <TextView
@@ -57,11 +51,12 @@
 
         <Button
             android:id="@+id/btnAddUserDetails"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Add User details"
+            android:text="Edit"
             android:textAllCaps="false"
             android:background="@drawable/button_cureved"/>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

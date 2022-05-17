@@ -5,15 +5,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:background="@drawable/bgimage">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical">
+        <ImageView
+            android:id="@+id/edtUserProfileImage"
+            android:layout_width="100dp"
+            android:layout_height="103dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/gabchat" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -22,7 +31,7 @@
             android:textSize="30dp"
             android:text="@string/app_name"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/design_default_color_primary_variant" />
+            android:textColor="#036897" />
 
         <View
             android:layout_width="match_parent"
@@ -61,7 +70,8 @@
                 android:layout_height="56dp"
                 android:id="@+id/btn_otpGen"
                 android:text="Generate OTP"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                android:background="@drawable/button_cureved"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +93,10 @@
                 android:id="@+id/btn_otpVerify"
                 android:text="Verify OTP"
                 android:layout_marginTop="30dp"
-                android:enabled="false"/>
+                android:enabled="false"
+                android:textColor="#101010"
+                android:background="@drawable/button_cureved"
+                tools:backgroundTint="#AAABAC"/>
         </LinearLayout>
 
         <ProgressBar

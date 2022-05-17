@@ -1,5 +1,6 @@
 package com.assignment.gabchat
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.assignment.gabchat.ConstantValues.SendBirdConstantValues
@@ -28,11 +30,13 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var calleeID:String
     private var isVideoCall:Boolean = false
 
+
     private lateinit var txtMsg:EditText
     lateinit var btnSendMsg: View
 
     private val READ_EXTERNAL_STORAGE_REQUEST = 0x1045
     private lateinit var ssDetect: ScreenShortDetectionManager
+    private lateinit var msgEnc: AesEncryption
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +47,7 @@ class ChatActivity : AppCompatActivity() {
         calleeID = this.intent.getStringExtra("calleeId").toString()
         InitializeValues()
         getChannelData()
+        msgEnc = AesEncryption()
 
         ssDetect = ScreenShortDetectionManager(baseContext)
         ssDetect.calleeId = calleeID
@@ -50,7 +55,22 @@ class ChatActivity : AppCompatActivity() {
         btnSendMsg.setOnClickListener {
             sendMessage()
         }
+        setToolBar()
     }
+
+    @SuppressLint("RestrictedApi")
+    private fun setToolBar() {
+
+        var actionBar: ActionBar = getSupportActionBar()!!
+        if(actionBar != null) {
+            actionBar.setTitle(calleeID)
+        }
+
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setDisplayUseLogoEnabled(true)
+
+    }
+
 
     private fun getChannelData() {
         //get into chatting channel
@@ -119,18 +139,20 @@ class ChatActivity : AppCompatActivity() {
     }
 
 */
-    private fun sendMessage()
-    {
-        val msgParam = UserMessageParams().setMessage(txtMsg.text.toString())
-        chatChannel.sendUserMessage(msgParam,
-            BaseChannel.SendUserMessageHandler { msg, e ->
-                if (e != null) {
-                    e.message?.let { Log.e("GABCHAT error (sendmessage):", it) }
-                    return@SendUserMessageHandler
-                }
-                adapterMsg.addNewMessage(msg)
-                txtMsg.text.clear()
-            })
+    private fun sendMessage() {
+
+    var encMsgData = msgEnc.encryption(txtMsg.text.toString())
+
+    val msgParam = UserMessageParams().setMessage(encMsgData)
+    chatChannel.sendUserMessage(msgParam,
+        BaseChannel.SendUserMessageHandler { msg, e ->
+            if (e != null) {
+                e.message?.let { Log.e("GABCHAT error (sendmessage):", it) }
+                return@SendUserMessageHandler
+            }
+            adapterMsg.addNewMessage(msg)
+            txtMsg.text.clear()
+        })
     }
 
 
