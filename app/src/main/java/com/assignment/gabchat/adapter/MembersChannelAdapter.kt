@@ -3,6 +3,7 @@ package com.assignment.gabchat.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.assignment.gabchat.Interface.ChannelClickedListener
@@ -35,7 +36,8 @@ class MembersChannelAdapter(private val channelClickListener: ChannelClickedList
 
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-       // val imageView: ImageView = itemView.findViewById(R.id.imageview)
+        val proImg: ImageView = itemView.findViewById(R.id.img_user)
         val membersName: TextView = itemView.findViewById(R.id.txt_membername)
+
     }
 }

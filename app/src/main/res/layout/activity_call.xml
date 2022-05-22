@@ -77,8 +77,8 @@
                 android:id="@+id/videocall_userown"
                 android:layout_width="93dp"
                 android:layout_height="152dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="266dp" />
+                android:layout_above="@+id/btn_ending"
+                android:layout_marginBottom="217dp" />
 
             <LinearLayout
                 android:id="@+id/btn_ending"
@@ -88,7 +88,7 @@
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:background="#C8C8C8">
+                android:background="@drawable/layout_curve_othermsg">
 
                 <!---
                 <ImageButton
@@ -104,12 +104,12 @@
                     android:layout_width="60dp"
                     android:layout_height="65dp"
                     android:layout_marginRight="10sp"
-                    android:text="screen share"
-                    android:visibility="invisible"
+                    android:background="@drawable/screensharetwo"
                     android:clickable="true"
                     android:focusable="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@drawable/screensharetwo" />
+                    android:text="screen share"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
 
                 <ImageView
@@ -117,20 +117,20 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginRight="10sp"
-                    android:text="end call"
+                    android:background="@drawable/end_phone_call"
                     android:clickable="true"
                     android:focusable="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@drawable/end_phone_call"/>
+                    android:text="end call"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <ImageView
                     android:id="@+id/btn_Calbtn_screenshare_end"
                     android:layout_width="60dp"
                     android:layout_height="65dp"
                     android:background="@drawable/stop_screen_share"
-                    android:visibility="invisible"
                     android:clickable="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    android:visibility="invisible" />
                 <!---app:backgroundTint="@drawable/end_phone_call"
            android:background="@drawable/end_phone_call" -->
 

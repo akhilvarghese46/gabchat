@@ -40,19 +40,19 @@ class CallHistoryAdapter(private var context: Context) : RecyclerView.Adapter<Ca
         if (userRole == DirectCallUserRole.CALLER) {
             user = callLog.callee
             if (callLog.isVideoCall) {
-                holder.imgCallWay.setBackgroundResource(R.drawable.incomming_calls)
+                holder.imgCallWay.setBackgroundResource(android.R.drawable.sym_call_incoming)
                 holder.imgVideAudio.setBackgroundResource(R.drawable.video_call)
             } else {
-                holder.imgCallWay.setBackgroundResource(R.drawable.outgoing_calls)
+                holder.imgCallWay.setBackgroundResource(android.R.drawable.sym_call_outgoing)
                 holder.imgVideAudio.setBackgroundResource(R.drawable.phone_dial)
             }
         } else {
             user = callLog.caller
             if (callLog.isVideoCall) {
-                holder.imgCallWay.setBackgroundResource(R.drawable.incomming_calls)
+                holder.imgCallWay.setBackgroundResource(android.R.drawable.sym_call_incoming)
                 holder.imgVideAudio.setBackgroundResource(R.drawable.video_call)
             } else {
-                holder.imgCallWay.setBackgroundResource(R.drawable.outgoing_calls)
+                holder.imgCallWay.setBackgroundResource(android.R.drawable.sym_call_outgoing)
                 holder.imgVideAudio.setBackgroundResource(R.drawable.phone_dial)
             }
         }
