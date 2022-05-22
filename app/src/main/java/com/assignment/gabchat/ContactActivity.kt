@@ -40,7 +40,7 @@ class ContactActivity : AppCompatActivity() , AddContactClickedListener {
                     }
                 }
 
-                val adapter = AddContactAdapter(this, data)
+                val adapter = AddContactAdapter(this.applicationContext,this, data)
 
                 menmbersRecyclerView.adapter = adapter
             }

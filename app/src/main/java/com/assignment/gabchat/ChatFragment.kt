@@ -1,5 +1,6 @@
 package com.assignment.gabchat
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,7 @@ class ChatFragment : Fragment(),ChannelClickedListener {
     private val EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL"
 
     lateinit var recyclerView: RecyclerView
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,7 +57,7 @@ class ChatFragment : Fragment(),ChannelClickedListener {
             }
 
 
-            val adapter = MembersChannelAdapter(this,data)
+            val adapter = MembersChannelAdapter(context!!,this,data)
 
             recyclerView.adapter = adapter
 

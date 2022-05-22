@@ -56,7 +56,7 @@ class CallHistoryAdapter(private var context: Context) : RecyclerView.Adapter<Ca
                 holder.imgVideAudio.setBackgroundResource(R.drawable.phone_dial)
             }
         }
-
+       // holder.bindView(context,user!!.userId.toString())
         holder.txtUserId.text= user!!.userId.toString()
         holder.txtDate.text = getDateString(callLog.startedAt)
 
@@ -67,19 +67,35 @@ class CallHistoryAdapter(private var context: Context) : RecyclerView.Adapter<Ca
     }
 
      class callHistoryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgCallWay: ImageView
-        val txtUserId: TextView
-        val txtDate: TextView
-        val imgVideAudio: ImageView
+        val imgCallWay: ImageView = itemView.findViewById(R.id.img_call_way)
+        val txtUserId: TextView = itemView.findViewById(R.id.txt_username)
+        val txtDate: TextView  = itemView.findViewById(R.id.txt_date)
+        val imgVideAudio: ImageView = itemView.findViewById(R.id.img_audio_video)
+         val proPic: ImageView = itemView.findViewById(R.id.img_user)
 
+        /* fun bindView(context: Context, userName: String) {
+             var imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("profilePic/"+userName+".jpg")
+             if(imageRef!= null) {
+                 val localFile = File.createTempFile("profilePic", "jpg")
 
-        init {
+                 imageRef.getFile(localFile).addOnSuccessListener {
+                     Glide.with(context)
+                         .load(localFile.absolutePath)
+                         .circleCrop()
+                         .into(proPic as ImageView)
+                 }.addOnFailureListener {
+                     Log.e("GabChat error:", "error when getting profile picture.")
+                 }
+             }
+         }*/
+
+       /* init {
             imgCallWay = itemView.findViewById(R.id.img_call_way)
             txtUserId = itemView.findViewById(R.id.txt_username)
             txtDate = itemView.findViewById(R.id.txt_date)
             imgVideAudio = itemView.findViewById(R.id.img_audio_video)
 
-        }
+        }*/
     }
 
 
