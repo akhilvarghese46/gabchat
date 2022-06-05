@@ -15,6 +15,8 @@ import com.google.firebase.messaging.RemoteMessage
 import com.sendbird.calls.AuthenticateParams
 import com.sendbird.calls.DirectCall
 import com.sendbird.calls.SendBirdCall
+import com.sendbird.calls.SendBirdCall.Options.addDirectCallSound
+import com.sendbird.calls.SendBirdCall.SoundType
 import com.sendbird.calls.handler.DirectCallListener
 import com.sendbird.calls.handler.SendBirdCallListener
 
@@ -51,6 +53,11 @@ class FirebaseMessageReceiver : FirebaseMessagingService() {
                 call.setListener(callListener)
             }
         })
+
+        addDirectCallSound(SoundType.DIALING, R.raw.dialing)
+        addDirectCallSound(SoundType.RINGING, R.raw.ringing)
+        addDirectCallSound(SoundType.RECONNECTING, R.raw.reconnecting)
+        addDirectCallSound(SoundType.RECONNECTED, R.raw.reconnected)
     }
 
     override fun onNewToken(token: String) {
@@ -61,11 +68,10 @@ class FirebaseMessageReceiver : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        Log.d(TAG, "onMessageReceived(remoteMessage: ${remoteMessage.data})")
         if (SendBirdCall.handleFirebaseMessageData(remoteMessage.data)) {
-            Log.d(TAG, "handleFirebaseMessageData succeeded.")
+            Log.d("GabChat", "Call succeeded.")
         } else {
-            Log.d(TAG, "handleFirebaseMessageData failed.")
+            Log.d("GabChat", "Call Failed.")
         }
     }
 

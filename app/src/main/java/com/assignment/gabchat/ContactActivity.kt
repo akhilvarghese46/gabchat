@@ -69,6 +69,9 @@ class ContactActivity : AppCompatActivity() , AddContactClickedListener {
             } else {
                 val intent = Intent(this, ChatActivity::class.java)
                 intent.putExtra(EXTRA_CHANNEL_URL, groupChannel.url)
+                var name =groupChannel.name.replace("[","").replace("]","")
+                intent.putExtra("calleeId", name)
+
                 startActivity(intent)
             }
         }

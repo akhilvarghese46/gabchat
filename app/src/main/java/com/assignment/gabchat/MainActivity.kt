@@ -17,10 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.assignment.gabchat.ConstantValues.SharedPreferanceObject
 import com.assignment.gabchat.dataclass.FireBaseMessageData
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import com.sendbird.android.SendBird
 import com.sendbird.calls.SendBirdCall
 import com.sendbird.calls.SendBirdException
@@ -126,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         SharedPreferanceObject.SB_IS_ACCEPTED_FCM = false
         SharedPreferanceObject.SB_CALL_ID_FCM = null
         SharedPreferanceObject.FCMToken = null
-
+        Firebase.auth.signOut()
         SendBirdCall.deauthenticate(object : CompletionHandler {
             override fun onResult(e: SendBirdException?) {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
@@ -146,10 +148,9 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun initializeData() {
-
-        var userName = intent.getStringExtra("userName")
-        Log.e("Main Activity username",userName.toString())
+        var userName = intent.getStringExtra("userName")?.lowercase()
         var userNickname = intent.getStringExtra("userNickName")
+
         connectUserToServer(userName.toString(), userNickname.toString() )
     }
 

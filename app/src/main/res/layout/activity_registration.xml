@@ -25,8 +25,17 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/common_google_signin_btn_icon_dark_normal" />
-
+            android:background="@drawable/user_image" />
+        <EditText
+            android:id="@+id/edtPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="18dp"
+            android:hint="Phone number"
+            android:editable="false"
+            android:inputType="none"
+            />
         <EditText
             android:id="@+id/edtUserName"
             android:layout_width="match_parent"
@@ -34,26 +43,28 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:textSize="18dp"
-            android:hint=" User Name"
+            android:hint=" User name"
             android:importantForAutofill="no"
             android:inputType="textPersonName" />
+        <!--   <EditText
+             android:id="@+id/edtNickName"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_margin="10dp"
+             android:textSize="18dp"
+             android:hint="User Nick Name"
+             android:inputType="textPostalAddress" />-->
+
+         <!--EditText for adding employee phone-->
+
         <EditText
-            android:id="@+id/edtNickName"
+            android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textSize="18dp"
-            android:hint="User Nick Name"
-            android:inputType="textPostalAddress" />
-
-        <!--EditText for adding employee phone-->
-        <TextView
-            android:id="@+id/edtPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_margin="10dp"
-            android:textSize="18dp"
-            android:hint="User phone number" />
+            android:hint="Password"
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/btnAddUserDetails"

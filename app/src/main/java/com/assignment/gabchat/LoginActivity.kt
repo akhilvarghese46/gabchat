@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.assignment.gabchat.ConstantValues.SharedPreferanceObject
+import com.assignment.gabchat.dataclass.UserDetails
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -18,6 +19,7 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.google.firebase.database.*
 import com.hbb20.CountryCodePicker
 import java.util.concurrent.TimeUnit
 
@@ -38,11 +40,17 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
 
     private lateinit  var otpVerifyView: View
     private lateinit  var otpGenView: View
+     lateinit var phoneNumberData:String
+
+    private var userName: String? = null
+    private var userPassword: String? = null
+
+    var fDataBaseUser: FirebaseDatabase? = null
+    var dbRefUser: DatabaseReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
 
         ccPicker = findViewById(R.id.country_code_picker)
         ccPicker!!.setOnCountryChangeListener(this)
@@ -59,13 +67,24 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
         otpGenView = findViewById<View>(R.id.layout_otp_gen)
         otpVerifyView = findViewById<View>(R.id.layout_otp_verify)
 
+
+
         btnOtpGen.setOnClickListener{
+            phoneNumberData = "+"+countryCode+phoneNum.getText().toString()
             if (TextUtils.isEmpty(phoneNum.getText().toString())) {
                 Toast.makeText(this@LoginActivity, "Enter Phone No.", Toast.LENGTH_SHORT).show()
             } else {
                 val phonNumber: String = phoneNum.getText().toString()
                 prgBar.setVisibility(View.VISIBLE)
-                generateOTPVerification(phonNumber)
+                //generateOTPVerification(phonNumber)
+
+
+
+                //-----------
+                btnOtpVerify.setEnabled(true)
+                otpVerifyView.setVisibility(View.VISIBLE)
+                otpGenView.setVisibility(View.INVISIBLE)
+                prgBar.setVisibility(View.INVISIBLE)
             }
         }
 
@@ -73,7 +92,8 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
             if (TextUtils.isEmpty(otpData.getText().toString())) {
                 Toast.makeText(this@LoginActivity, "Wrong OTP Entered", Toast.LENGTH_SHORT).show()
             } else {
-                verifycode(otpData.getText().toString())
+                //verifycode(otpData.getText().toString())
+                getUserDetails(phoneNumberData)
             }
         })
     }
@@ -92,7 +112,6 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
             .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
-
     }
 
 
@@ -108,10 +127,7 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
                 Toast.makeText(this@LoginActivity, "Verification Failed", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onCodeSent(
-                s: String,
-                token: ForceResendingToken
-            ) {
+            override fun onCodeSent(s: String, token: ForceResendingToken) {
                 super.onCodeSent(s, token)
                 firVerifyId = s
                 Toast.makeText(this@LoginActivity, "Code sent", Toast.LENGTH_SHORT).show()
@@ -134,10 +150,10 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
                 if (task.isSuccessful) {
                     val user = task.result?.user
                     Toast.makeText(this@LoginActivity, "Login Successfull", Toast.LENGTH_SHORT).show()
-                    startRegistrationActivity()
+                    //startRegistrationActivity()
+                    getUserDetails(phoneNumberData)
                 } else {
                     Toast.makeText(this@LoginActivity, "Login Failed", Toast.LENGTH_SHORT).show()
-
                 }
             }
     }
@@ -155,12 +171,43 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
         intent.putExtra("userName", userName)
         intent.putExtra("userNickName", userName)
         startActivity(intent)
-
     }
 
     fun startRegistrationActivity() {
-        startActivity(Intent(this@LoginActivity, Registration::class.java))
+
+        //getUserDetails(phoneNumberData)
+        val intent = Intent(this@LoginActivity, Registration::class.java)
+        intent.putExtra("userName", userName)
+        intent.putExtra("userPassword", userPassword)
+        intent.putExtra("phoneNumber", phoneNumberData)
+
+        startActivity(intent)
         finish()
+
     }
+
+    fun getUserDetails(phoneNumberData:String) {
+        fDataBaseUser = FirebaseDatabase.getInstance()
+        dbRefUser = fDataBaseUser!!.getReference("UserDetails")
+         dbRefUser!!.orderByChild("phoneNumber").equalTo(phoneNumberData.toString()).addValueEventListener(object : ValueEventListener {
+        //dbRefUser!!.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (userSnapshot in snapshot.children) {
+                        var userData = userSnapshot.getValue(UserDetails::class.java)!!
+                        userName = userData.userName.toString()
+                        userPassword = userData.password.toString()
+                    }
+                } else {
+                    Log.e("GabCaht error", "UserDetails not found for "+ phoneNumberData)
+                }
+                startRegistrationActivity()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
 
 }
