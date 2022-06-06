@@ -76,15 +76,15 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
             } else {
                 val phonNumber: String = phoneNum.getText().toString()
                 prgBar.setVisibility(View.VISIBLE)
-                //generateOTPVerification(phonNumber)
+                generateOTPVerification(phonNumber)
 
 
 
                 //-----------
-                btnOtpVerify.setEnabled(true)
+               /* btnOtpVerify.setEnabled(true)
                 otpVerifyView.setVisibility(View.VISIBLE)
                 otpGenView.setVisibility(View.INVISIBLE)
-                prgBar.setVisibility(View.INVISIBLE)
+                prgBar.setVisibility(View.INVISIBLE)*/
             }
         }
 
@@ -92,8 +92,8 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
             if (TextUtils.isEmpty(otpData.getText().toString())) {
                 Toast.makeText(this@LoginActivity, "Wrong OTP Entered", Toast.LENGTH_SHORT).show()
             } else {
-                //verifycode(otpData.getText().toString())
-                getUserDetails(phoneNumberData)
+                 verifycode(otpData.getText().toString())
+                //getUserDetails(phoneNumberData)
             }
         })
     }
@@ -161,7 +161,8 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     override fun onStart() {
         super.onStart()
         val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null &&   SharedPreferanceObject.SBUserId != null ) {
+       // Log.e("GabCaht error", "11111111111111111 --"+ currentUser + "2222222222222222--" + SharedPreferanceObject.SBUserId)
+        if (currentUser != null &&  SharedPreferanceObject.SBUserId != null ) {
             startMainActivity( SharedPreferanceObject.SBUserId.toString())
         }
     }

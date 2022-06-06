@@ -116,7 +116,7 @@ class Registration : AppCompatActivity() {
     fun insertLoginUserDetails( userName: String,  phoneNumber: String, userPassword: String){
         firebaseDatabase = FirebaseDatabase.getInstance()
         dbRef = firebaseDatabase!!.getReference("UserDetails")
-        var msgInfo = UserDetails(userName,phoneNumber,userPassword)
+        var msgInfo = UserDetails(userName.lowercase(),phoneNumber,userPassword)
         val id: String = dbRef!!.push().getKey().toString()
         dbRef!!.child(id).setValue(msgInfo)
             .addOnCompleteListener(OnCompleteListener<Void?> { task ->
@@ -133,11 +133,11 @@ class Registration : AppCompatActivity() {
     {
         // ServerAuthManager()
         SharedPreferanceObject.createSP(applicationContext)
-        SharedPreferanceObject.SBUserId = userName.getText().toString()
+        SharedPreferanceObject.SBUserId = userName.getText().toString().lowercase()
         val intent = Intent(this, MainActivity::class.java)
 
-        intent.putExtra("userName", userName.text.toString())
-        intent.putExtra("userNickName", userName.text.toString())
+        intent.putExtra("userName", userName.text.toString().lowercase())
+        intent.putExtra("userNickName", userName.text.toString().lowercase())
         startActivity(intent)
     }
 

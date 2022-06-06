@@ -228,5 +228,15 @@ class MainActivity : AppCompatActivity() {
             Log.d("Registration Activity", "[${permissions.joinToString()}] is granted.")
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        var status = this.intent.getStringExtra("notificationStatus")
+        if(status.toString()=="close") {
+            val serviceIntent = Intent(this, UserDefinedNotificationServices::class.java)
+            stopService(serviceIntent)
+        }
+
+    }
 }
 

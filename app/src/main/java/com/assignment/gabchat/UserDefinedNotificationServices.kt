@@ -28,6 +28,8 @@ class UserDefinedNotificationServices : Service() {
         val senderName: String? = intent.getStringExtra("SenderName")
         val msg: String? = intent.getStringExtra("notificationMsg")
 
+        notificationIntent.putExtra("notificationStatus","close")
+
         val notification: Notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("GabChat")
             .setContentText(msg)
