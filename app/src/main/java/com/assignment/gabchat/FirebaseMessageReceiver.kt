@@ -17,12 +17,8 @@ import com.sendbird.calls.DirectCall
 import com.sendbird.calls.SendBirdCall
 import com.sendbird.calls.SendBirdCall.Options.addDirectCallSound
 import com.sendbird.calls.SendBirdCall.SoundType
-import com.sendbird.calls.handler.DirectCallListener
 import com.sendbird.calls.handler.SendBirdCallListener
 
-
-val channel_id = "notification_channel"
-val channelName = "com.assignment.fcmnotificationone"
 val TAG = FirebaseMessageReceiver::class.java.simpleName
 private const val CHANNEL_ID = "GabChat Ringing"
 private const val NOTIFICATION_ID = 0
@@ -31,26 +27,16 @@ class FirebaseMessageReceiver : FirebaseMessagingService() {
 
     init {
         SendBirdCall.addListener(TAG, object : SendBirdCallListener() {
-            private val callListener = object : DirectCallListener() {
-                override fun onConnected(call: DirectCall) {}
-
-                override fun onEnded(call: DirectCall) {
-                    val notificationManager =
-                        application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    notificationManager.cancel(NOTIFICATION_ID)
-                }
-            }
-
             override fun onRinging(call: DirectCall) {
                 val userId = SharedPreferanceObject.SBUserId ?: return
                 if (SendBirdCall.currentUser == null) {
-                    SendBirdCall.authenticate(
-                        AuthenticateParams(userId)
-                    ) { user, e -> showNotification(call) }
+                    SendBirdCall.authenticate(AuthenticateParams(userId)) {
+                            user, e -> showNotification(call)
+                    }
                 } else {
                     showNotification(call)
                 }
-                call.setListener(callListener)
+               // call.setListener(callListener)
             }
         })
 

@@ -34,14 +34,15 @@ class CallHistoryFragment :  Fragment(){
         callHistoryQuery!!.next(object : DirectCallLogListQueryResultHandler {
             override fun onResult(callLogs: List<DirectCallLog>?, e: SendBirdException?) {
                 if (e == null) {
-                    if (callHistoryQuery!!.hasNext() && !callHistoryQuery!!.isLoading) {
+                    //if (callHistoryQuery!!.hasNext() && !callHistoryQuery!!.isLoading) {
 
                         val adapter = getContext()?.let { CallHistoryAdapter(it) }
                         adapter?.getCallLogo(callLogs)
                         adapter?.notifyDataSetChanged()
                         recyclerView.adapter = adapter
 
-                    }
+                  //  }
+
                 }
                 else{
                     Log.e("GABCHAT error (call history):", e.message.toString())
@@ -52,8 +53,5 @@ class CallHistoryFragment :  Fragment(){
 
         return viewOfLayout
     }
-
-
-
 
 }

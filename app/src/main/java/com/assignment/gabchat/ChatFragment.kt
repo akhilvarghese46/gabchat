@@ -45,12 +45,14 @@ class ChatFragment : Fragment(),ChannelClickedListener {
 
                 for (s in list) {
                     var name = s.members[0].userId.toString()
-                    Log.e("GABCHAT :", "user:"+s.members[0].userId.toString()+"sp:"+SharedPreferanceObject.SBUserId)
+
+                    Log.e("GABCHAT :", "user:"+s.members[0].userId.toString()+"sp:"+SharedPreferanceObject.SBUserId + "userId :"+s.members[1].userId.toString() +"name :" +s.name)
                     if(s.members[0].userId.toString() == SharedPreferanceObject.SBUserId )
                     {
-                        name =s.name.replace("]","").replace("[","")
-
+                        //name =s.name.replace("]","").replace("[","")
+                        name = s.members[1].userId.toString()
                     }
+
 
                     data.add(ChannelModel(name,s.memberCount.toString(),s.url))
                 }
