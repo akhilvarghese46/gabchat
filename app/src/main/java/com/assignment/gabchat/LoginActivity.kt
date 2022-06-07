@@ -78,8 +78,6 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
                 prgBar.setVisibility(View.VISIBLE)
                 generateOTPVerification(phonNumber)
 
-
-
                 //-----------
                /* btnOtpVerify.setEnabled(true)
                 otpVerifyView.setVisibility(View.VISIBLE)
@@ -161,7 +159,6 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     override fun onStart() {
         super.onStart()
         val currentUser = FirebaseAuth.getInstance().currentUser
-       // Log.e("GabCaht error", "11111111111111111 --"+ currentUser + "2222222222222222--" + SharedPreferanceObject.SBUserId)
         if (currentUser != null &&  SharedPreferanceObject.SBUserId != null ) {
             startMainActivity( SharedPreferanceObject.SBUserId.toString())
         }
@@ -175,7 +172,6 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     }
 
     fun startRegistrationActivity() {
-
         //getUserDetails(phoneNumberData)
         val intent = Intent(this@LoginActivity, Registration::class.java)
         intent.putExtra("userName", userName)

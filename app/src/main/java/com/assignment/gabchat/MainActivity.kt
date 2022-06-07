@@ -150,6 +150,9 @@ class MainActivity : AppCompatActivity() {
     private fun initializeData() {
         var userName = intent.getStringExtra("userName")?.lowercase()
         var userNickname = intent.getStringExtra("userNickName")
+        if(userName == null||userName == "null") {
+            userName = SharedPreferanceObject.SBUserId
+        }
 
         connectUserToServer(userName.toString(), userNickname.toString() )
     }

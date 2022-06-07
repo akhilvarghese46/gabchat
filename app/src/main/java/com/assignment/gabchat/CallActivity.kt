@@ -249,38 +249,6 @@ class CallActivity : AppCompatActivity() {
         return call
      }
 
-/*
-    private val directCallListener: DirectCallListener = object : DirectCallListener() {
-        var calltimer: Timer = Timer()
-        override fun onEstablished(call: DirectCall) {
-            callStatus.text ="CONNECTING"
-            calltimer.schedule(object : TimerTask() {
-                override fun run() {
-                    callTime.text = "${callData.duration.div(1000)}s"
-                }
-            }, 1000, 1000)
-        }
-
-        override fun onReconnected(call: DirectCall) {
-            callStatus.text ="CONNECTED"
-        }
-
-        override fun onReconnecting(call: DirectCall) {
-            callStatus.text ="RECONNECTING"
-        }
-
-        override fun onConnected(call: DirectCall) {
-            callStatus.text ="CONNECTED"
-        }
-
-        override fun onEnded(call: DirectCall) {
-            callStatus.text ="END"
-            calltimer.cancel()
-            stopScreenShareService()
-            getMainActivity()
-        }
-    }
-*/
 
     private fun startScreenShareService() {
         val serviceIntent = Intent(this, GabChatScreenShareService::class.java)

@@ -68,6 +68,7 @@ class Registration : AppCompatActivity() {
         }*/
 
         btnSubmitUserDetails.setOnClickListener{
+            SharedPreferanceObject.phoneNumber =userPhone.getText().toString()
 
             if (TextUtils.isEmpty(userName.getText().toString())||TextUtils.isEmpty(edtUserPassword.getText().toString())||TextUtils.isEmpty(edtUserPassword.getText().toString())) {
                 Toast.makeText(this, "Enter User Details.", Toast.LENGTH_SHORT).show()
@@ -75,11 +76,11 @@ class Registration : AppCompatActivity() {
                     Toast.makeText(this, "Enter the password.", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Log.e("GabCaht- UserDetails:", "+++++++++++++++")
+                //Log.e("GabCaht- UserDetails:", "+++++++++++++++")
                 if(userPassword != null && userNameData != null && userPassword != "null" && userNameData != "null") {
-                    Log.e("GabCaht- UserDetails:", "//////////////////")
+                    //Log.e("GabCaht- UserDetails:", "//////////////////")
                     if(edtUserPassword.getText().toString()!=userPassword) {
-                        Log.e("GabCaht- UserDetails:", "/kkkkkk///")
+                       // Log.e("GabCaht- UserDetails:", "/kkkkkk///")
                         Toast.makeText(this, "Password is incorrect!!", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
@@ -88,7 +89,8 @@ class Registration : AppCompatActivity() {
                     }
                 }
                 else{
-                    Log.e("GabCaht- UserDetails:", "--------------------")
+                   // Log.e("GabCaht- UserDetails:", "--------------------")
+                    SharedPreferanceObject.phoneNumber =userPhone.getText().toString()
                     insertLoginUserDetails(userName.getText().toString(),userPhone.getText().toString(),edtUserPassword.getText().toString())
                 }
 

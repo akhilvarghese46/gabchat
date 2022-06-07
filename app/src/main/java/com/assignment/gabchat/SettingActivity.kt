@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.assignment.gabchat.ConstantValues.SharedPreferanceObject
@@ -23,10 +24,16 @@ class SettingActivity : AppCompatActivity() {
     private val pickImage = 100
     private var userImageUri: Uri? = null
     lateinit var filePath: Uri
+    private lateinit  var userName: TextView
+    private lateinit  var userPhone: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+        userName = findViewById<TextView>(R.id.edt_userName)
+        userPhone = findViewById<TextView>(R.id.edt_PhoneNumber)
+        userName.setText(SharedPreferanceObject.SBUserId)
+        userPhone.setText(SharedPreferanceObject.phoneNumber)
         userImage = findViewById<View>(R.id.edtUserProfileImage)
         var imageRef:StorageReference = FirebaseStorage.getInstance().reference.child("profilePic/"+SharedPreferanceObject.SBUserId+".jpg")
 
@@ -41,17 +48,7 @@ class SettingActivity : AppCompatActivity() {
             Log.e("GabChat error:", "error when getting profile picture.")
         }
 
-        //+ ProfileUrl
-      /*  val profileUrl = if (SendBird.getCurrentUser() != null) SendBird.getCurrentUser().profileUrl else ""
-        if (profileUrl.length > 0) {
-            Glide.with(this)
-                .load(profileUrl)
-                .circleCrop()
-                .into(userImage as ImageView)
 
-
-
-        }*/
         userImage.setOnClickListener(){
             uploadImage()
         }

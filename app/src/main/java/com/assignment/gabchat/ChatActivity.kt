@@ -118,27 +118,6 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-
-/*
-    override fun onPause() {
-        super.onPause()
-        SendBird.removeChannelHandler(CHANNEL_HANDLER_ID)
-    }
-*/
-   /* private fun setButtonListeners() {
-        /*val back = button_gchat_back
-        back.setOnClickListener {
-            val intent = Intent(this, ChannelListActivity::class.java)
-            startActivity(intent)
-        }
-*/
-        val send = button_gchat_send
-        send.setOnClickListener {
-            sendMessage()
-        }
-    }
-
-*/
     private fun sendMessage() {
 
     var encMsgData = msgEnc.encryption(txtMsg.text.toString())

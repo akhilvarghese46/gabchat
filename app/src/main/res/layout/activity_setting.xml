@@ -29,7 +29,7 @@
             android:background="@drawable/user_image" />
 
         <TextView
-            android:id="@+id/edtUserName"
+            android:id="@+id/edt_userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -42,7 +42,7 @@
 
         <!--EditText for adding employee phone-->
         <TextView
-            android:id="@+id/edtPhoneNumber"
+            android:id="@+id/edt_PhoneNumber"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_margin="10dp"

@@ -48,10 +48,7 @@ class CallHistoryFragment :  Fragment(){
                 }
             }
 
-
         })
-
-
 
         return viewOfLayout
     }
