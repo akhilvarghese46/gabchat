@@ -18,8 +18,12 @@ class GabChatScreenShareService : Service() {
         if (Build.VERSION.SDK_INT >= 26) {
             val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
-            } else { TODO("VERSION.SDK_INT < O") }
-            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+            } else {
+                TODO("VERSION.SDK_INT < O")
+            }
+            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+                channel
+            )
         }
     }
 
@@ -31,11 +35,22 @@ class GabChatScreenShareService : Service() {
             .setContentText("Screen sharing...")
             .setSmallIcon(R.drawable.gabchat)
             .setContentIntent(
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-            } else {
-                PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT)
-            })
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    PendingIntent.getActivity(
+                        this,
+                        0,
+                        notificationIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                } else {
+                    PendingIntent.getActivity(
+                        this,
+                        0,
+                        notificationIntent,
+                        PendingIntent.FLAG_ONE_SHOT
+                    )
+                }
+            )
             .build()
         startForeground(1, notification)
         return START_NOT_STICKY

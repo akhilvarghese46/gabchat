@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private val fragmentManager = supportFragmentManager
     private lateinit var btnChat: Button
     private lateinit var btnCall: Button
-    lateinit  var ssData:ArrayList<FireBaseMessageData>
+    lateinit var ssData: ArrayList<FireBaseMessageData>
 
     val REQUEST_CODE_PERMISSION = 0
     private val permissions = listOf(
@@ -43,28 +43,24 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.RECORD_AUDIO
     )
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setToolBar()
-
-
         getMessage(SharedPreferanceObject.SBUserId.toString())
 
         btnChat = findViewById<Button>(R.id.btnChatMenu)
         btnCall = findViewById<Button>(R.id.btnCallMenu)
-        btnChat.setOnClickListener(){
-            loadFragment( ChatFragment())
+        btnChat.setOnClickListener() {
+            loadFragment(ChatFragment())
         }
 
-        btnCall.setOnClickListener(){
-            loadFragment( CallHistoryFragment())
+        btnCall.setOnClickListener() {
+            loadFragment(CallHistoryFragment())
         }
 
-        fab_createUser.setOnClickListener{
+        fab_createUser.setOnClickListener {
             val intent = Intent(this, ContactActivity::class.java)
             startActivity(intent)
         }
@@ -75,28 +71,23 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
             }.toTypedArray()
 
-            if(permissions.size != 0) {
+            if (permissions.size != 0) {
                 requestPermissions(permissions, REQUEST_CODE_PERMISSION)
             }
         }
-
-
-
     }
 
     @SuppressLint("RestrictedApi")
     private fun setToolBar() {
 
         var actionBar: ActionBar = getSupportActionBar()!!
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setTitle("GabChat")
         }
 
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setDisplayUseLogoEnabled(true)
-
     }
-
 
     override fun onCreateOptionsMenu(settingsMenu: Menu?): Boolean {
         menuInflater.inflate(R.menu.settingsmenu, settingsMenu)
@@ -104,8 +95,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when(item.itemId) {
+        when (item.itemId) {
 
             R.id.settings -> {
                 val intent = Intent(this@MainActivity, SettingActivity::class.java)
@@ -114,7 +104,6 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.logOut -> {
                 logoutUser()
-
                 return true
             }
         }
@@ -138,7 +127,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
     private fun loadFragment(fragment: Fragment) {
         var fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.mainDataFragment, fragment)
@@ -146,15 +134,13 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-
     private fun initializeData() {
         var userName = intent.getStringExtra("userName")?.lowercase()
         var userNickname = intent.getStringExtra("userNickName")
-        if(userName == null||userName == "null") {
+        if (userName == null || userName == "null") {
             userName = SharedPreferanceObject.SBUserId
         }
-
-        connectUserToServer(userName.toString(), userNickname.toString() )
+        connectUserToServer(userName.toString(), userNickname.toString())
     }
 
     fun connectUserToServer(userName: String, nickName: String) {
@@ -164,11 +150,12 @@ class MainActivity : AppCompatActivity() {
         if (returnauth) {
             SendBird.connect(userName) { username, e ->
                 if (e != null) {
-                    Toast.makeText(this, "error connect" +e.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "error connect" + e.message, Toast.LENGTH_LONG).show()
                 } else {
                     SendBird.updateCurrentUserInfo(nickName, null) { e ->
                         if (e != null) {
-                            Toast.makeText(this, "error update" + e.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "error update" + e.message, Toast.LENGTH_LONG)
+                                .show()
                         }
                         loadFragment(ChatFragment())
                         /*val intent = Intent(this, UserslistActivity::class.java)
@@ -177,49 +164,44 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-        else{
+        } else {
             Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 
     private fun getCallActivity() {
         val intent = Intent(this, CallActivity::class.java)
         startActivity(intent)
     }
 
-    fun getMessage( currentUserName: String){
+    fun getMessage(currentUserName: String) {
         firebaseDatabase = FirebaseDatabase.getInstance()
-        dbRef= FirebaseDatabase.getInstance().getReference("screenShortMessage")
+        dbRef = FirebaseDatabase.getInstance().getReference("screenShortMessage")
         dbRef!!.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    for(userSnapshot in snapshot.children){
+                if (snapshot.exists()) {
+                    for (userSnapshot in snapshot.children) {
                         var data = userSnapshot.getValue(FireBaseMessageData::class.java)!!
-                        if(currentUserName == data.ReciverUserName) {
-                            val serviceIntent = Intent(this@MainActivity, UserDefinedNotificationServices::class.java)
-                            serviceIntent.putExtra("SenderName",data.SenderUserName)
-                            serviceIntent.putExtra("notificationMsg",data.Message)
+                        if (currentUserName == data.ReciverUserName) {
+                            val serviceIntent = Intent(
+                                this@MainActivity,
+                                UserDefinedNotificationServices::class.java
+                            )
+                            serviceIntent.putExtra("SenderName", data.SenderUserName)
+                            serviceIntent.putExtra("notificationMsg", data.Message)
                             ContextCompat.startForegroundService(this@MainActivity, serviceIntent)
                             userSnapshot.getRef().removeValue();
-
                         }
-
                     }
-                }else{
-                    Log.e("screenshort error","not found data")
+                } else {
+                    Log.e("screenshort error", "not found data")
                 }
                 return
-
             }
             override fun onCancelled(error: DatabaseError) {
             }
-
         })
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -235,7 +217,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         var status = this.intent.getStringExtra("notificationStatus")
-        if(status.toString()=="close") {
+        if (status.toString() == "close") {
             val serviceIntent = Intent(this, UserDefinedNotificationServices::class.java)
             stopService(serviceIntent)
         }

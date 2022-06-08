@@ -25,22 +25,22 @@ import java.util.concurrent.TimeUnit
 
 
 class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeListener {
-    private var ccPicker: CountryCodePicker?=null
-    private var countryCode:String?="353"
-    private var countryName:String?=null
+    private var ccPicker: CountryCodePicker? = null
+    private var countryCode: String? = "353"
+    private var countryName: String? = null
 
-    private lateinit  var phoneNum: EditText
-    private lateinit  var otpData:EditText
+    private lateinit var phoneNum: EditText
+    private lateinit var otpData: EditText
     private lateinit var btnOtpGen: Button
 
-    private lateinit  var btnOtpVerify: Button
+    private lateinit var btnOtpVerify: Button
     private lateinit var firAuth: FirebaseAuth
     var firVerifyId: String? = null
     private lateinit var prgBar: ProgressBar
 
-    private lateinit  var otpVerifyView: View
-    private lateinit  var otpGenView: View
-     lateinit var phoneNumberData:String
+    private lateinit var otpVerifyView: View
+    private lateinit var otpGenView: View
+    lateinit var phoneNumberData: String
 
     private var userName: String? = null
     private var userPassword: String? = null
@@ -67,10 +67,8 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
         otpGenView = findViewById<View>(R.id.layout_otp_gen)
         otpVerifyView = findViewById<View>(R.id.layout_otp_verify)
 
-
-
-        btnOtpGen.setOnClickListener{
-            phoneNumberData = "+"+countryCode+phoneNum.getText().toString()
+        btnOtpGen.setOnClickListener {
+            phoneNumberData = "+" + countryCode + phoneNum.getText().toString()
             if (TextUtils.isEmpty(phoneNum.getText().toString())) {
                 Toast.makeText(this@LoginActivity, "Enter Phone No.", Toast.LENGTH_SHORT).show()
             } else {
@@ -79,10 +77,10 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
                 generateOTPVerification(phonNumber)
 
                 //-----------
-               /* btnOtpVerify.setEnabled(true)
-                otpVerifyView.setVisibility(View.VISIBLE)
-                otpGenView.setVisibility(View.INVISIBLE)
-                prgBar.setVisibility(View.INVISIBLE)*/
+                /* btnOtpVerify.setEnabled(true)
+                 otpVerifyView.setVisibility(View.VISIBLE)
+                 otpGenView.setVisibility(View.INVISIBLE)
+                 prgBar.setVisibility(View.INVISIBLE)*/
             }
         }
 
@@ -90,21 +88,21 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
             if (TextUtils.isEmpty(otpData.getText().toString())) {
                 Toast.makeText(this@LoginActivity, "Wrong OTP Entered", Toast.LENGTH_SHORT).show()
             } else {
-                 verifycode(otpData.getText().toString())
+                verifycode(otpData.getText().toString())
                 //getUserDetails(phoneNumberData)
             }
         })
     }
 
     override fun onCountrySelected() {
-        countryCode=ccPicker!!.selectedCountryCode
-        countryName=ccPicker!!.selectedCountryName
+        countryCode = ccPicker!!.selectedCountryCode
+        countryName = ccPicker!!.selectedCountryName
     }
 
     private fun generateOTPVerification(phonNumber: String) {
-        Log.e("login activity phone numer:","+"+countryCode+phonNumber.toString())
+        Log.e("login activity phone numer:", "+" + countryCode + phonNumber.toString())
         val options = PhoneAuthOptions.newBuilder(firAuth)
-            .setPhoneNumber("+"+countryCode+phonNumber)       // Phone number to verify
+            .setPhoneNumber("+" + countryCode + phonNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
             .setActivity(this)                 // Activity (for callback binding)
             .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
@@ -121,7 +119,7 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
-                Log.e("login activity error:","+"+e.toString())
+                Log.e("login activity error:", "+" + e.toString())
                 Toast.makeText(this@LoginActivity, "Verification Failed", Toast.LENGTH_SHORT).show()
             }
 
@@ -159,8 +157,8 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     override fun onStart() {
         super.onStart()
         val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null &&  SharedPreferanceObject.SBUserId != null ) {
-            startMainActivity( SharedPreferanceObject.SBUserId.toString())
+        if (currentUser != null && SharedPreferanceObject.SBUserId != null) {
+            startMainActivity(SharedPreferanceObject.SBUserId.toString())
         }
     }
 
@@ -183,27 +181,28 @@ class LoginActivity : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
 
     }
 
-    fun getUserDetails(phoneNumberData:String) {
+    fun getUserDetails(phoneNumberData: String) {
         fDataBaseUser = FirebaseDatabase.getInstance()
         dbRefUser = fDataBaseUser!!.getReference("UserDetails")
-         dbRefUser!!.orderByChild("phoneNumber").equalTo(phoneNumberData.toString()).addValueEventListener(object : ValueEventListener {
-        //dbRefUser!!.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    for (userSnapshot in snapshot.children) {
-                        var userData = userSnapshot.getValue(UserDetails::class.java)!!
-                        userName = userData.userName.toString()
-                        userPassword = userData.password.toString()
+        dbRefUser!!.orderByChild("phoneNumber").equalTo(phoneNumberData.toString())
+            .addValueEventListener(object : ValueEventListener {
+                //dbRefUser!!.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (userSnapshot in snapshot.children) {
+                            var userData = userSnapshot.getValue(UserDetails::class.java)!!
+                            userName = userData.userName.toString()
+                            userPassword = userData.password.toString()
+                        }
+                    } else {
+                        Log.e("GabCaht error", "UserDetails not found for " + phoneNumberData)
                     }
-                } else {
-                    Log.e("GabCaht error", "UserDetails not found for "+ phoneNumberData)
+                    startRegistrationActivity()
                 }
-                startRegistrationActivity()
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
     }
 
 

@@ -253,26 +253,21 @@ class CallActivity : AppCompatActivity() {
     private fun startScreenShareService() {
         val serviceIntent = Intent(this, GabChatScreenShareService::class.java)
         ContextCompat.startForegroundService(this, serviceIntent)
-        //this.let { it.startService(Intent(it, ExampleService::class.java)) }
     }
 
     private fun stopScreenShareService() {
         val serviceIntent = Intent(this, GabChatScreenShareService::class.java)
         stopService(serviceIntent)
-        // this?.let { it.stopService(Intent(it, GabChatScreenShareService::class.java)) }
     }
 
     private fun stopFcmCallServices() {
         val serviceIntent = Intent(this, FirebaseMessageReceiver::class.java)
         stopService(serviceIntent)
-        // this?.let { it.stopService(Intent(it, GabChatScreenShareService::class.java)) }
     }
     private fun getMainActivity() {
         stopScreenShareService()
         this.finish()
         return
-        //val intent = Intent(this, MainActivity::class.java)
-       // startActivity(intent)
     }
 
 

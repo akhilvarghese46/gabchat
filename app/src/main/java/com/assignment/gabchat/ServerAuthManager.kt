@@ -15,18 +15,16 @@ import com.sendbird.calls.handler.CompletionHandler
 class ServerAuthManager : AppCompatActivity() {
 
     //Authenticate user details with SendBird
-    fun aunthenticate(userID: String):Boolean
-    {
-        var returnvalue:Boolean =true
+    fun aunthenticate(userID: String): Boolean {
+        var returnvalue: Boolean = true
 
         SendBirdCall.authenticate(AuthenticateParams(userID), object : AuthenticateHandler {
             override fun onResult(user: User?, e: SendBirdException?) {
                 if (e != null) {
                     e.printStackTrace()
                     e.message?.let { Log.e("GABCHAT error (Authentication):", it) }
-                    returnvalue =false
-                }
-                else{
+                    returnvalue = false
+                } else {
                     getFCMToken()
                 }
             }
@@ -34,15 +32,13 @@ class ServerAuthManager : AppCompatActivity() {
 
         return returnvalue
     }
-    
+
     //get FCM token 
-    fun getFCMToken()
-    {
+    fun getFCMToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { token ->
             if (token.isSuccessful) {
                 setFcmTokenToSB(token.result)
-            }
-            else{
+            } else {
                 Log.e(
                     "GABCHAT error (getFCMToken):", token.exception?.message.toString()
                 )
@@ -51,13 +47,13 @@ class ServerAuthManager : AppCompatActivity() {
     }
 
     // set fcm token to sendbird
-     fun setFcmTokenToSB(fcmToken: String) {
+    fun setFcmTokenToSB(fcmToken: String) {
         if (SendBirdCall.currentUser != null) {
             SendBirdCall.registerPushToken(fcmToken, false, object : CompletionHandler {
                 override fun onResult(e: SendBirdException?) {
                     if (e != null) {
                         e.printStackTrace()
-                        e.message?.let { Log.e("GABCHAT error (Authentication):", it)}
+                        e.message?.let { Log.e("GABCHAT error (Authentication):", it) }
                     }
                 }
             })

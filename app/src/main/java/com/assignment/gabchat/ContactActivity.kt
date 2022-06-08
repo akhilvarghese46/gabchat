@@ -13,7 +13,7 @@ import com.sendbird.android.GroupChannel
 import com.sendbird.android.GroupChannelParams
 import com.sendbird.android.SendBird
 
-class ContactActivity : AppCompatActivity() , AddContactClickedListener {
+class ContactActivity : AppCompatActivity(), AddContactClickedListener {
 
 
     private lateinit var menmbersRecyclerView: RecyclerView
@@ -22,12 +22,10 @@ class ContactActivity : AppCompatActivity() , AddContactClickedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact)
-
         menmbersRecyclerView = findViewById<RecyclerView>(R.id.recycler_group_channels)
         menmbersRecyclerView.layoutManager = LinearLayoutManager(this)
 
         val userListQuery = SendBird.createApplicationUserListQuery()
-
         userListQuery.next() { list, e ->
             if (e != null) {
                 e.message?.let { Log.e("GABCHAT error (ContactList):", it) }
@@ -40,11 +38,10 @@ class ContactActivity : AppCompatActivity() , AddContactClickedListener {
                     }
                 }
 
-                val adapter = AddContactAdapter(this.applicationContext,this, data)
+                val adapter = AddContactAdapter(this.applicationContext, this, data)
 
                 menmbersRecyclerView.adapter = adapter
             }
-
         }
     }
 
@@ -52,7 +49,8 @@ class ContactActivity : AppCompatActivity() , AddContactClickedListener {
         var userid = listOf(channel.userName)
         createChannel(userid)
     }
-    private fun createChannel(users:List<String>) {
+
+    private fun createChannel(users: List<String>) {
         val params = GroupChannelParams()
 
         val operatorId = ArrayList<String>()
@@ -69,7 +67,7 @@ class ContactActivity : AppCompatActivity() , AddContactClickedListener {
             } else {
                 val intent = Intent(this, ChatActivity::class.java)
                 intent.putExtra(EXTRA_CHANNEL_URL, groupChannel.url)
-                var name =groupChannel.name.replace("[","").replace("]","")
+                var name = groupChannel.name.replace("[", "").replace("]", "")
                 intent.putExtra("calleeId", name)
 
                 startActivity(intent)

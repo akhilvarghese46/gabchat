@@ -32,14 +32,15 @@ class AesEncryption {
         }
     }
 
-   //it encrypt the message
+    //it encrypt the message
     fun encryption(strToEncrypt: String): String? {
-       val msgKey = BaseApplication.MESSAGE_SECERT_KEY
+        val msgKey = BaseApplication.MESSAGE_SECERT_KEY
         try {
             setSecertKey(msgKey)
             val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-            return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.toByteArray(charset("UTF-8"))))
+            return Base64.getEncoder()
+                .encodeToString(cipher.doFinal(strToEncrypt.toByteArray(charset("UTF-8"))))
         } catch (e: Exception) {
             Log.e("GABCHAT error (Error while encrypting msg:):", e.toString())
         }

@@ -15,7 +15,7 @@ class ScreenShortDetectionManager(private val context: Context) {
     private var content: ContentObserver? = null
     private var ssMsg = ScreenShortFireBase()
 
-    lateinit var calleeId :String
+    lateinit var calleeId: String
 
     fun start() {
         if (content == null) {
@@ -44,14 +44,19 @@ class ScreenShortDetectionManager(private val context: Context) {
                 val path = cursor.getString(dataColumn)
                 if (path.contains("screenshot", true)) {
 
-                    ssMsg.insertMessage(SharedPreferanceObject.SBUserId.toString(),calleeId,SharedPreferanceObject.SBUserId.toString()+" Took a Screenshot!")
+                    ssMsg.insertMessage(
+                        SharedPreferanceObject.SBUserId.toString(),
+                        calleeId,
+                        SharedPreferanceObject.SBUserId.toString() + " Took a Screenshot!"
+                    )
                 }
             }
         }
     }
 
     private fun queryRelativeDataColumn(uri: Uri) {
-        val projection = arrayOf(MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.RELATIVE_PATH)
+        val projection =
+            arrayOf(MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.RELATIVE_PATH)
         context.contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
             val relativePathColumn =
                 cursor.getColumnIndex(MediaStore.Images.Media.RELATIVE_PATH)
@@ -60,9 +65,17 @@ class ScreenShortDetectionManager(private val context: Context) {
             while (cursor.moveToNext()) {
                 val name = cursor.getString(displayNameColumn)
                 val relativePath = cursor.getString(relativePathColumn)
-                if (name.contains("screenshot", true) or relativePath.contains("screenshot", true)) {
+                if (name.contains("screenshot", true) or relativePath.contains(
+                        "screenshot",
+                        true
+                    )
+                ) {
 
-                    ssMsg.insertMessage(SharedPreferanceObject.SBUserId.toString(),calleeId,SharedPreferanceObject.SBUserId.toString()+" Took a Screenshot!")
+                    ssMsg.insertMessage(
+                        SharedPreferanceObject.SBUserId.toString(),
+                        calleeId,
+                        SharedPreferanceObject.SBUserId.toString() + " Took a Screenshot!"
+                    )
 
 
                 }

@@ -24,10 +24,11 @@ import java.io.File
 class Registration : AppCompatActivity() {
     //private lateinit var firAuth: FirebaseAuth
     private lateinit var btnSubmitUserDetails: Button
-    private lateinit  var userName: EditText
-   // private lateinit  var userNickName: EditText
-    private lateinit  var userPhone: EditText
-    private lateinit  var edtUserPassword: EditText
+    private lateinit var userName: EditText
+
+    // private lateinit  var userNickName: EditText
+    private lateinit var userPhone: EditText
+    private lateinit var edtUserPassword: EditText
     private lateinit var userImage: View
 
     private lateinit var userNameData: String
@@ -42,66 +43,66 @@ class Registration : AppCompatActivity() {
 
         var phoneNumber = this.intent.getStringExtra("phoneNumber").toString()
         var userPassword = this.intent.getStringExtra("userPassword").toString()
-             userNameData = this.intent.getStringExtra("userName").toString()
-        if( userNameData != null  && userNameData != "null") {
+        userNameData = this.intent.getStringExtra("userName").toString()
+        if (userNameData != null && userNameData != "null") {
             setProfileImage()
         }
         //firAuth = FirebaseAuth.getInstance()
         btnSubmitUserDetails = findViewById<Button>(R.id.btnAddUserDetails)
         userName = findViewById<EditText>(R.id.edtUserName)
-       // userNickName = findViewById<EditText>(R.id.edtNickName)
+        // userNickName = findViewById<EditText>(R.id.edtNickName)
         userPhone = findViewById<EditText>(R.id.edtPhoneNumber)
         userPhone.setEnabled(false)
         userPhone.setKeyListener(null)
-        edtUserPassword= findViewById<EditText>(R.id.edtPassword)
+        edtUserPassword = findViewById<EditText>(R.id.edtPassword)
         userPhone.setText(phoneNumber)
 
-        if(phoneNumber!= null && userPassword != null && userNameData != null && phoneNumber!= "null" && userPassword != "null" && userNameData != "null") {
+        if (phoneNumber != null && userPassword != null && userNameData != null && phoneNumber != "null" && userPassword != "null" && userNameData != "null") {
             userName.setText(userNameData)
             userName.setEnabled(false)
             userName.setKeyListener(null)
         }
 
-      /*  if(SharedPreferanceObject.phoneNumber.toString() != null)
-        {
-            userPhone.setText(SharedPreferanceObject.phoneNumber.toString())
-        }*/
+        /*  if(SharedPreferanceObject.phoneNumber.toString() != null)
+          {
+              userPhone.setText(SharedPreferanceObject.phoneNumber.toString())
+          }*/
 
-        btnSubmitUserDetails.setOnClickListener{
-            SharedPreferanceObject.phoneNumber =userPhone.getText().toString()
+        btnSubmitUserDetails.setOnClickListener {
+            SharedPreferanceObject.phoneNumber = userPhone.getText().toString()
 
-            if (TextUtils.isEmpty(userName.getText().toString())||TextUtils.isEmpty(edtUserPassword.getText().toString())||TextUtils.isEmpty(edtUserPassword.getText().toString())) {
+            if (TextUtils.isEmpty(userName.getText().toString()) || TextUtils.isEmpty(
+                    edtUserPassword.getText().toString()
+                ) || TextUtils.isEmpty(edtUserPassword.getText().toString())
+            ) {
                 Toast.makeText(this, "Enter User Details.", Toast.LENGTH_SHORT).show()
-                if(TextUtils.isEmpty(edtUserPassword.getText().toString())) {
+                if (TextUtils.isEmpty(edtUserPassword.getText().toString())) {
                     Toast.makeText(this, "Enter the password.", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                //Log.e("GabCaht- UserDetails:", "+++++++++++++++")
-                if(userPassword != null && userNameData != null && userPassword != "null" && userNameData != "null") {
-                    //Log.e("GabCaht- UserDetails:", "//////////////////")
-                    if(edtUserPassword.getText().toString()!=userPassword) {
-                       // Log.e("GabCaht- UserDetails:", "/kkkkkk///")
+                if (userPassword != null && userNameData != null && userPassword != "null" && userNameData != "null") {
+                    if (edtUserPassword.getText().toString() != userPassword) {
                         Toast.makeText(this, "Password is incorrect!!", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
-                    }
-                    else{
+                    } else {
                         getMainActivity()
                     }
+                } else {
+                    SharedPreferanceObject.phoneNumber = userPhone.getText().toString()
+                    insertLoginUserDetails(
+                        userName.getText().toString(),
+                        userPhone.getText().toString(),
+                        edtUserPassword.getText().toString()
+                    )
                 }
-                else{
-                   // Log.e("GabCaht- UserDetails:", "--------------------")
-                    SharedPreferanceObject.phoneNumber =userPhone.getText().toString()
-                    insertLoginUserDetails(userName.getText().toString(),userPhone.getText().toString(),edtUserPassword.getText().toString())
-                }
-
-
             }
         }
     }
 
     private fun setProfileImage() {
-        var imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("profilePic/"+userNameData+".jpg")
-        if(imageRef!= null) {
+        var imageRef: StorageReference =
+            FirebaseStorage.getInstance().reference.child("profilePic/" + userNameData + ".jpg")
+        if (imageRef != null) {
             val localFile = File.createTempFile("profilePic", "jpg")
 
             imageRef.getFile(localFile).addOnSuccessListener {
@@ -115,10 +116,10 @@ class Registration : AppCompatActivity() {
         }
     }
 
-    fun insertLoginUserDetails( userName: String,  phoneNumber: String, userPassword: String){
+    fun insertLoginUserDetails(userName: String, phoneNumber: String, userPassword: String) {
         firebaseDatabase = FirebaseDatabase.getInstance()
         dbRef = firebaseDatabase!!.getReference("UserDetails")
-        var msgInfo = UserDetails(userName.lowercase(),phoneNumber,userPassword)
+        var msgInfo = UserDetails(userName.lowercase(), phoneNumber, userPassword)
         val id: String = dbRef!!.push().getKey().toString()
         dbRef!!.child(id).setValue(msgInfo)
             .addOnCompleteListener(OnCompleteListener<Void?> { task ->
@@ -131,8 +132,7 @@ class Registration : AppCompatActivity() {
 
     }
 
-    fun getMainActivity()
-    {
+    fun getMainActivity() {
         // ServerAuthManager()
         SharedPreferanceObject.createSP(applicationContext)
         SharedPreferanceObject.SBUserId = userName.getText().toString().lowercase()
@@ -142,8 +142,6 @@ class Registration : AppCompatActivity() {
         intent.putExtra("userNickName", userName.text.toString().lowercase())
         startActivity(intent)
     }
-
-
 
 
 }

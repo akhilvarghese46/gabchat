@@ -18,8 +18,12 @@ class UserDefinedNotificationServices : Service() {
         if (Build.VERSION.SDK_INT >= 26) {
             val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
-            } else { TODO("VERSION.SDK_INT < O") }
-            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+            } else {
+                TODO("VERSION.SDK_INT < O")
+            }
+            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+                channel
+            )
         }
     }
 
@@ -28,18 +32,29 @@ class UserDefinedNotificationServices : Service() {
         val senderName: String? = intent.getStringExtra("SenderName")
         val msg: String? = intent.getStringExtra("notificationMsg")
 
-        notificationIntent.putExtra("notificationStatus","close")
+        notificationIntent.putExtra("notificationStatus", "close")
 
         val notification: Notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("GabChat")
             .setContentText(msg)
             .setSmallIcon(R.drawable.gabchat)
             .setContentIntent(
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-            } else {
-                PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT)
-            })
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    PendingIntent.getActivity(
+                        this,
+                        0,
+                        notificationIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                } else {
+                    PendingIntent.getActivity(
+                        this,
+                        0,
+                        notificationIntent,
+                        PendingIntent.FLAG_ONE_SHOT
+                    )
+                }
+            )
             .build()
         startForeground(1, notification)
         return START_NOT_STICKY

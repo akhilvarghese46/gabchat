@@ -8,7 +8,6 @@ class TimeMange {
         return SimpleDateFormat("HH:mm", Locale.getDefault()).format(time)
     }
 
-
     fun date(time: Long): String {
         return SimpleDateFormat("MMMM dd", Locale.getDefault()).format(time)
     }

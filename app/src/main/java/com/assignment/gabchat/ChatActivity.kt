@@ -30,7 +30,6 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var calleeID:String
     private var isVideoCall:Boolean = false
 
-
     private lateinit var txtMsg:EditText
     lateinit var btnSendMsg: View
 
@@ -134,8 +133,6 @@ class ChatActivity : AppCompatActivity() {
         })
     }
 
-
-
     private fun getPrevMessages() {
         val prevMsgList = chatChannel.createPreviousMessageListQuery()
         prevMsgList.load(100, true) { messages, e ->
@@ -161,13 +158,10 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
-
     private fun getChannelUrl(): String {
         val intent = this.intent
         return intent.getStringExtra(EXTRA_CHANNEL_URL).toString()
     }
-
-
 
     private fun dialPhoneCall() {
         val callData = SendBirdCall.dial(DialParams(calleeID).setVideoCall(isVideoCall)

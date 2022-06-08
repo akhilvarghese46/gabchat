@@ -17,19 +17,19 @@ import com.assignment.gabchat.dataclass.ChannelModel
 import com.sendbird.android.GroupChannel
 
 
-class ChatFragment : Fragment(),ChannelClickedListener {
+class ChatFragment : Fragment(), ChannelClickedListener {
     private lateinit var viewOfLayout: View
     private val EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL"
 
     lateinit var recyclerView: RecyclerView
+
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-
-        viewOfLayout =inflater.inflate(R.layout.fragment_chat, container, false)
+        viewOfLayout = inflater.inflate(R.layout.fragment_chat, container, false)
         recyclerView = viewOfLayout.findViewById<RecyclerView>(R.id.recycler_group_channels)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -40,35 +40,30 @@ class ChatFragment : Fragment(),ChannelClickedListener {
             }
             var data = ArrayList<ChannelModel>()
 
-            if(!list.isNullOrEmpty())
-            {
+            if (!list.isNullOrEmpty()) {
 
                 for (s in list) {
                     var name = s.members[0].userId.toString()
 
-                    Log.e("GABCHAT :", "user:"+s.members[0].userId.toString()+"sp:"+SharedPreferanceObject.SBUserId + "userId :"+s.members[1].userId.toString() +"name :" +s.name)
-                    if(s.members[0].userId.toString() == SharedPreferanceObject.SBUserId )
-                    {
+                    Log.e(
+                        "GABCHAT :",
+                        "user:" + s.members[0].userId.toString() + "sp:" + SharedPreferanceObject.SBUserId + "userId :" + s.members[1].userId.toString() + "name :" + s.name
+                    )
+                    if (s.members[0].userId.toString() == SharedPreferanceObject.SBUserId) {
                         //name =s.name.replace("]","").replace("[","")
                         name = s.members[1].userId.toString()
                     }
 
-
-                    data.add(ChannelModel(name,s.memberCount.toString(),s.url))
+                    data.add(ChannelModel(name, s.memberCount.toString(), s.url))
                 }
             }
 
-
-            val adapter = MembersChannelAdapter(context!!,this,data)
-
+            val adapter = MembersChannelAdapter(context!!, this, data)
             recyclerView.adapter = adapter
-
         }
-
 
         return viewOfLayout
     }
-
 
     override fun onChannelListener(channel: ChannelModel) {
         val intent = Intent(activity, ChatActivity::class.java)
@@ -76,7 +71,6 @@ class ChatFragment : Fragment(),ChannelClickedListener {
         intent.putExtra("calleeId", channel.userName)
         startActivity(intent)
     }
-
 
 
 }

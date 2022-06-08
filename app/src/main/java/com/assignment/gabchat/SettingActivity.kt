@@ -24,8 +24,8 @@ class SettingActivity : AppCompatActivity() {
     private val pickImage = 100
     private var userImageUri: Uri? = null
     lateinit var filePath: Uri
-    private lateinit  var userName: TextView
-    private lateinit  var userPhone: TextView
+    private lateinit var userName: TextView
+    private lateinit var userPhone: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,8 @@ class SettingActivity : AppCompatActivity() {
         userName.setText(SharedPreferanceObject.SBUserId)
         userPhone.setText(SharedPreferanceObject.phoneNumber)
         userImage = findViewById<View>(R.id.edtUserProfileImage)
-        var imageRef:StorageReference = FirebaseStorage.getInstance().reference.child("profilePic/"+SharedPreferanceObject.SBUserId+".jpg")
+        var imageRef: StorageReference =
+            FirebaseStorage.getInstance().reference.child("profilePic/" + SharedPreferanceObject.SBUserId + ".jpg")
 
         val localFile = File.createTempFile("profilePic", "jpg")
 
@@ -49,7 +50,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
 
-        userImage.setOnClickListener(){
+        userImage.setOnClickListener() {
             uploadImage()
         }
     }
@@ -58,37 +59,39 @@ class SettingActivity : AppCompatActivity() {
         var intent = Intent()
         intent.setType("image/*")
         intent.setAction(Intent.ACTION_GET_CONTENT)
-        startActivityForResult(Intent.createChooser(intent,"Choose Picture"),111)
+        startActivityForResult(Intent.createChooser(intent, "Choose Picture"), 111)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 111 && resultCode == Activity.RESULT_OK && data!= null) {
+        if (requestCode == 111 && resultCode == Activity.RESULT_OK && data != null) {
             filePath = data.data!!
             Glide.with(this)
                 .load(filePath)
                 .circleCrop()
                 .into(userImage as ImageView)
 
-            if(filePath != null){
+            if (filePath != null) {
                 var pd = ProgressDialog(this)
                 pd.setTitle("Uploading")
                 pd.show()
 
-                var imageRef:StorageReference = FirebaseStorage.getInstance().reference.child("profilePic/"+SharedPreferanceObject.SBUserId+".jpg")
+                var imageRef: StorageReference =
+                    FirebaseStorage.getInstance().reference.child("profilePic/" + SharedPreferanceObject.SBUserId + ".jpg")
                 imageRef.putFile(filePath)
-                    .addOnSuccessListener { p0->
+                    .addOnSuccessListener { p0 ->
                         pd.dismiss()
-                        Toast.makeText(applicationContext,"File Uploaded", Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, "File Uploaded", Toast.LENGTH_LONG)
+                            .show()
                     }
-                    .addOnFailureListener{ p0->
+                    .addOnFailureListener { p0 ->
                         pd.dismiss()
-                        Toast.makeText(applicationContext,p0.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, p0.message, Toast.LENGTH_LONG).show()
 
                     }
-                    .addOnProgressListener { p0->
-                        var prograss:Double = (100.0 * p0.bytesTransferred) / p0.totalByteCount
-                        pd.setMessage("Uploading :"+ prograss.toInt() +"%")
+                    .addOnProgressListener { p0 ->
+                        var prograss: Double = (100.0 * p0.bytesTransferred) / p0.totalByteCount
+                        pd.setMessage("Uploading :" + prograss.toInt() + "%")
 
                     }
             }

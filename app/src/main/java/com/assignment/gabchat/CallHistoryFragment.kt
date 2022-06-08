@@ -16,14 +16,18 @@ import com.sendbird.calls.SendBirdException
 import com.sendbird.calls.handler.DirectCallLogListQueryResultHandler
 
 
-class CallHistoryFragment :  Fragment(){
+class CallHistoryFragment : Fragment() {
     private lateinit var viewOfLayout: View
     private var callHistoryQuery: DirectCallLogListQuery? = null
     lateinit var recyclerView: RecyclerView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        viewOfLayout =inflater.inflate(R.layout.fragment_call_history, container, false)
+        viewOfLayout = inflater.inflate(R.layout.fragment_call_history, container, false)
         recyclerView = viewOfLayout.findViewById<RecyclerView>(R.id.recycler_history)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -36,15 +40,13 @@ class CallHistoryFragment :  Fragment(){
                 if (e == null) {
                     //if (callHistoryQuery!!.hasNext() && !callHistoryQuery!!.isLoading) {
 
-                        val adapter = getContext()?.let { CallHistoryAdapter(it) }
-                        adapter?.getCallLogo(callLogs)
-                        adapter?.notifyDataSetChanged()
-                        recyclerView.adapter = adapter
+                    val adapter = getContext()?.let { CallHistoryAdapter(it) }
+                    adapter?.getCallLogo(callLogs)
+                    adapter?.notifyDataSetChanged()
+                    recyclerView.adapter = adapter
+                    //  }
 
-                  //  }
-
-                }
-                else{
+                } else {
                     Log.e("GABCHAT error (call history):", e.message.toString())
                 }
             }
