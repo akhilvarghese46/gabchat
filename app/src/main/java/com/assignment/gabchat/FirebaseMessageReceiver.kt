@@ -90,6 +90,7 @@ class FirebaseMessageReceiver : FirebaseMessagingService() {
             putExtra("CALL_ID", call.callId)
             putExtra("SBCALL_IS_ACCEPTED", true)
             putExtra("isfcmAccepted", "true")
+            putExtra("calleeID", call.remoteUser?.userId)
         }
 
         val declineIntent = Intent(this, CallActivity::class.java).apply {
@@ -101,6 +102,7 @@ class FirebaseMessageReceiver : FirebaseMessagingService() {
             putExtra("CALL_ID", call.callId)
             putExtra("SBCALL_IS_DECLINED", true)
             putExtra("isfcmAccepted", "false")
+            putExtra("calleeID", call.remoteUser?.userId)
         }
 
         val randomRequestCode = (Int.MIN_VALUE..Int.MAX_VALUE).random()
